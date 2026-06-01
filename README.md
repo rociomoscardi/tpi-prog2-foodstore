@@ -3,13 +3,11 @@
 Trabajo Práctico Integrador – Programación 2  
 Tecnicatura Universitaria en Programación – Universidad Tecnológica Nacional (UTN)
 
----
 
 ## 📋 Descripción
 
 Food Store es una aplicación de consola desarrollada en Java 21, orientada a la gestión de productos de un negocio de comidas. Permite administrar categorías, productos, usuarios y pedidos mediante un menú interactivo, aplicando Programación Orientada a Objetos (POO) y almacenamiento en memoria con Colecciones.
 
----
 
 ## 👥 Integrantes
 
@@ -20,7 +18,6 @@ Food Store es una aplicación de consola desarrollada en Java 21, orientada a la
 | (Integrante C) | Servicios de Categoría y Producto |
 | (Integrante D) | Servicios de Usuario, Pedido y menú |
 
----
 
 ## 🛠️ Tecnologías utilizadas
 
@@ -29,7 +26,6 @@ Food Store es una aplicación de consola desarrollada en Java 21, orientada a la
 - Programación Orientada a Objetos (POO)
 - Git / GitHub
 
----
 
 ## 📁 Estructura del proyecto
 
