@@ -189,14 +189,14 @@ public class Pedido extends Base implements Calculable {
 
     @Override
     public String toString() {
-        return "Pedido{" +
-                "id=" + getId() +
-                ", fecha=" + fecha +
-                ", estado=" + estado +
-                ", total=" + total +
-                ", formaPago=" + formaPago +
-                ", usuario=" + usuario.getNombre() + " " + usuario.getApellido() +
-                ", eliminado=" + isEliminado() +
-                '}';
+        return "Pedido{"
+                + "id=" + getId()
+                + ", fecha=" + fecha
+                + ", estado=" + estado
+                + ", total=" + total
+                + ", formaPago=" + formaPago
+                + ", usuario=" + (usuario != null ? usuario.getNombre() + " " + usuario.getApellido() : "Sin usuario")
+                + ", eliminado=" + isEliminado()
+                + '}';
     }
 }

@@ -16,7 +16,7 @@ public class Producto extends Base {
     }
 
     public Producto(Long id, String nombre, Double precio, String descripcion,
-                    Integer stock, String imagen, Boolean disponible, Categoria categoria) {
+            Integer stock, String imagen, Boolean disponible, Categoria categoria) {
         super(id);
         setNombre(nombre);
         setPrecio(precio);
@@ -122,14 +122,14 @@ public class Producto extends Base {
 
     @Override
     public String toString() {
-        return "Producto{" +
-                "id=" + getId() +
-                ", nombre='" + nombre + '\'' +
-                ", precio=" + precio +
-                ", stock=" + stock +
-                ", disponible=" + disponible +
-                ", categoria=" + categoria.getNombre() +
-                ", eliminado=" + isEliminado() +
-                '}';
+        return "Producto{"
+                + "id=" + getId()
+                + ", nombre='" + nombre + '\''
+                + ", precio=" + precio
+                + ", stock=" + stock
+                + ", disponible=" + disponible
+                + ", categoria=" + (categoria != null ? categoria.getNombre() : "Sin categoría") 
+                + ", eliminado=" + isEliminado()
+                + '}';
     }
 }
