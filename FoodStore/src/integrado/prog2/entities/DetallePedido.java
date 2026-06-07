@@ -2,7 +2,7 @@ package integrado.prog2.entities;
 
 public class DetallePedido extends Base {
 
-    private Integer cantidad;
+    private int cantidad;
     private Double subtotal;
     private Producto producto;
 
@@ -11,22 +11,18 @@ public class DetallePedido extends Base {
         this.subtotal = 0.0;
     }
 
-    public DetallePedido(Long id, Integer cantidad, Producto producto) {
+    public DetallePedido(Long id, int cantidad, Producto producto) {
         super(id);
         setCantidad(cantidad);
         setProducto(producto);
         calcularSubtotal();
     }
 
-    public Integer getCantidad() {
+    public int getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(Integer cantidad) {
-        if (cantidad == null) {
-            throw new IllegalArgumentException("La cantidad no puede ser nula.");
-        }
-
+    public void setCantidad(int cantidad) {
         if (cantidad <= 0) {
             throw new IllegalArgumentException("La cantidad debe ser mayor a 0.");
         }
@@ -71,8 +67,8 @@ public class DetallePedido extends Base {
     }
 
     public void calcularSubtotal() {
-        if (producto == null || cantidad == null) {
-            throw new IllegalArgumentException("No se puede calcular el subtotal sin producto y cantidad.");
+        if (producto == null) {
+            throw new IllegalArgumentException("No se puede calcular el subtotal sin producto.");
         }
 
         this.subtotal = cantidad * producto.getPrecio();
@@ -82,7 +78,7 @@ public class DetallePedido extends Base {
     public String toString() {
         return "DetallePedido{" +
                 "id=" + getId() +
-                ", producto=" + producto.getNombre() +
+                ", producto=" + (producto != null ? producto.getNombre() : "Sin producto") +
                 ", cantidad=" + cantidad +
                 ", subtotal=" + subtotal +
                 ", eliminado=" + isEliminado() +

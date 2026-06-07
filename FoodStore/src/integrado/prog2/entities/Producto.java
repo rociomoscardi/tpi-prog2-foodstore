@@ -5,9 +5,9 @@ public class Producto extends Base {
     private String nombre;
     private Double precio;
     private String descripcion;
-    private Integer stock;
+    private int stock;
     private String imagen;
-    private Boolean disponible;
+    private boolean disponible;
     private Categoria categoria;
 
     public Producto() {
@@ -16,7 +16,7 @@ public class Producto extends Base {
     }
 
     public Producto(Long id, String nombre, Double precio, String descripcion,
-            Integer stock, String imagen, Boolean disponible, Categoria categoria) {
+            int stock, String imagen, boolean disponible, Categoria categoria) {
         super(id);
         setNombre(nombre);
         setPrecio(precio);
@@ -65,15 +65,11 @@ public class Producto extends Base {
         this.descripcion = descripcion;
     }
 
-    public Integer getStock() {
+    public int getStock() {
         return stock;
     }
 
-    public void setStock(Integer stock) {
-        if (stock == null) {
-            throw new IllegalArgumentException("El stock no puede ser nulo.");
-        }
-
+    public void setStock(int stock) {
         if (stock < 0) {
             throw new IllegalArgumentException("El stock no puede ser menor a 0.");
         }
@@ -93,14 +89,11 @@ public class Producto extends Base {
         }
     }
 
-    public Boolean getDisponible() {
+    public boolean getDisponible() {
         return disponible;
     }
 
-    public void setDisponible(Boolean disponible) {
-        if (disponible == null) {
-            throw new IllegalArgumentException("La disponibilidad no puede ser nula.");
-        }
+    public void setDisponible(boolean disponible) {
         this.disponible = disponible;
     }
 
@@ -128,7 +121,7 @@ public class Producto extends Base {
                 + ", precio=" + precio
                 + ", stock=" + stock
                 + ", disponible=" + disponible
-                + ", categoria=" + (categoria != null ? categoria.getNombre() : "Sin categoría") 
+                + ", categoria=" + (categoria != null ? categoria.getNombre() : "Sin categoría")
                 + ", eliminado=" + isEliminado()
                 + '}';
     }
