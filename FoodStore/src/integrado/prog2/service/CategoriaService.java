@@ -41,11 +41,11 @@ public class CategoriaService {
 
     }
 
-    public void editarCategoria(Long categoriaId, Categoria categoria) {
+    public void editarCategoria(Long categoriaId, String nombre,String descripcion) {
         for (Categoria categoriaEditar : categorias) {
             if(categoriaEditar.getId().equals(categoriaId)){
-                categoriaEditar.setNombre(categoria.getNombre());
-                categoriaEditar.setDescripcion(categoria.getDescripcion());
+                categoriaEditar.setNombre(nombre);
+                categoriaEditar.setDescripcion(descripcion);
                 return;
             }
         }
