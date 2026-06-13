@@ -4,8 +4,7 @@
  */
 package integrado.prog2.service;
 
-import Exceptions.IdDuplicadoExcepcion;
-import Exceptions.IdNoEncontradoExcepcion;
+import integrado.prog2.exception.*;
 import integrado.prog2.entities.Categoria;
 import integrado.prog2.entities.Producto;
 import java.util.ArrayList;
@@ -38,12 +37,12 @@ public class ProductoService {
             if (productoAEliminar.getId().equals(productoId)) {
                 productoAEliminar.setDisponible(false);
                 productoAEliminar.setEliminado(true);
-                System.out.println(productoAEliminar);
+              
                 return;
             }
         }
 
-        throw new IdNoEncontradoExcepcion("El ID: " + productoId + "no se encontro para eliminar el producto.");
+        throw new IdNoEncontradoExcepcion("El ID: " + productoId + " no se encontro para eliminar el producto.");
 
     }
 
@@ -53,7 +52,7 @@ public class ProductoService {
             if (productoActualizar.getId().equals(productoId)) {
                 
                 if(productoActualizar.isEliminado()==true){
-                    throw new IllegalArgumentException("El producto con el ID:"+ productoId + "fue removido de la lista");
+                    throw new IdEliminadoExecption("El producto con el ID:"+ productoId + " fue removido de la lista y no se puede editar");
                 }
                 
                 productoActualizar.setPrecio(precio);
@@ -69,7 +68,7 @@ public class ProductoService {
             
             
         }
-        throw new IdNoEncontradoExcepcion("Error. El ID:" + productoId + "no se encontro." );
+        throw new IdNoEncontradoExcepcion("Error. El ID:" + productoId + " no se encontro." );
 
     }
     
@@ -78,7 +77,7 @@ public class ProductoService {
     public List<Producto> listarProductos(){
         List<Producto> productosDisponibles = new ArrayList<>();
         for (Producto producto : productos) {
-            if(producto.getDisponible()){
+            if(producto.getDisponible()==true && producto.isEliminado() == false){
                 productosDisponibles.add(producto);
             }
         }

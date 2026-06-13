@@ -25,6 +25,7 @@ public class Main {
        
        cService.editarCategoria(1l, "helados", "palitos bombones");
        
+       pService.editarProducto(1l, 300, 10, c);
        pService.editarProducto(2l, 300, 10, c);
        
        

@@ -5,6 +5,7 @@
 package integrado.prog2.service;
 
 import integrado.prog2.entities.Categoria;
+import integrado.prog2.exception.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class CategoriaService {
 
         for (Categoria categoriaAgregar : categorias) {
             if (categoriaAgregar.getId().equals(categoria.getId())) {
-                throw new IllegalArgumentException("la categoria ya existe");
+                throw new IdDuplicadoExcepcion("la categoria ya existe y el ID es: "+ categoria.getId());
             }
         }
         categorias.add(categoria);
@@ -44,12 +45,17 @@ public class CategoriaService {
     public void editarCategoria(Long categoriaId, String nombre,String descripcion) {
         for (Categoria categoriaEditar : categorias) {
             if(categoriaEditar.getId().equals(categoriaId)){
+                
+                if(categoriaEditar.isEliminado()==true ){
+                    throw new IdEliminadoExecption("El ID:" + categoriaEditar.getId() + "fue removido de la lista y no se puede editar.");
+                }
+                
                 categoriaEditar.setNombre(nombre);
                 categoriaEditar.setDescripcion(descripcion);
                 return;
             }
         }
-        throw new IllegalArgumentException("La categoria con ID:" + categoriaId + "no se encontro");
+        throw new IdNoEncontradoExcepcion("La categoria con ID:" + categoriaId + " no se encontro para editar");
 
     }
 
