@@ -28,7 +28,7 @@ public class CategoriaService {
         return categoriasDisponibles;
     }
 
-    public void elimiarCategoria(Long categoriaId) {
+    public void eliminarCategoria(Long categoriaId) {
         for (Categoria categoria : categorias) {
             if (categoria.getId().equals(categoriaId)) {
                 categoria.setEliminado(true);
@@ -54,7 +54,7 @@ public class CategoriaService {
             if (categoriaEditar.getId().equals(categoriaId)) {
 
                 if (categoriaEditar.isEliminado() == true) {
-                    throw new IdEliminadoExecption("El ID:" + categoriaEditar.getId() + "fue removido de la lista y no se puede editar.");
+                    throw new IdEliminadoExecption("El ID: " + categoriaEditar.getId() + " fue removido de la lista y no se puede editar.");
                 }
 
                 categoriaEditar.setNombre(nombre);
