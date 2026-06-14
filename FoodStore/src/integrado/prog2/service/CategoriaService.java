@@ -43,6 +43,9 @@ public class CategoriaService {
     public void agregarCategoria(Categoria categoria) {
 
         for (Categoria categoriaAgregar : categorias) {
+            if(categoria == null){
+                throw new NullException("La categoria no puede ser nula");
+            }
             if (categoriaAgregar.getId().equals(categoria.getId())) {
                 throw new IdDuplicadoException("la categoria ya existe y el ID es: " + categoria.getId());
             }

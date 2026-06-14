@@ -8,20 +8,20 @@ package integrado.prog2.exception;
  *
  * @author fernando
  */
-public class ProductNullException extends RuntimeException{
+public class NullException extends RuntimeException{
 
-    public ProductNullException() {
+    public NullException() {
     }
 
-    public ProductNullException(String message) {
+    public NullException(String message) {
         super(message);
     }
 
-    public ProductNullException(String message, Throwable cause) {
+    public NullException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public ProductNullException(Throwable cause) {
+    public NullException(Throwable cause) {
         super(cause);
     }
     
