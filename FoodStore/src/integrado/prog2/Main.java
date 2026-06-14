@@ -83,7 +83,7 @@ public class Main {
                     // menuPedidos(scanner, pedService, uService, pService);
                     break;
                 case 0:
-                    System.out.println("¡Hasta luego!");
+                    System.out.println("Saliendo...");
                     break;
                 default:
                     System.out.println("Opción inválida. Intente nuevamente.");
@@ -131,7 +131,13 @@ public class Main {
                         // Solicitamos los datos de la nueva categoría al usuario
                         System.out.print("Ingrese el ID: ");
                         Long id = scanner.nextLong();
-                        scanner.nextLine(); // Limpiamos el buffer después de leer el Long
+                        scanner.nextLine();
+
+                        // Verificamos si el ID ya existe antes de pedir más datos al usuario
+                        if (cService.buscarPorId(id) != null) {
+                            System.out.println("Error: ya existe una categoría con ID: " + id);
+                            break;
+                        }
 
                         System.out.print("Ingrese el nombre: ");
                         String nombre = scanner.nextLine();
