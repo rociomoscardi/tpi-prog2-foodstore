@@ -37,13 +37,13 @@ public class ProductoService {
 
             if (productoAEliminar.getId().equals(productoId)) {
                 productoAEliminar.setDisponible(false);
-                productoAEliminar.setEliminado(true);
+                productoAEliminar.eliminar();
 
                 return;
             }
         }
 
-        throw new IdNoEncontradoException("El ID: " + productoId + " no se encontro para eliminar el producto.");
+        throw new IdNoEncontradoException("El ID: " + productoId + " no se encontró para eliminar el producto.");
 
     }
 
