@@ -66,7 +66,7 @@ public class ProductoService {
             }
 
         }
-        throw new IdNoEncontradoException("Error. El ID:" + productoId + " no se encontro.");
+        throw new IdNoEncontradoException("Error. El ID:" + productoId + " no se encontró.");
 
     }
 
