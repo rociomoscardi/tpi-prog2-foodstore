@@ -29,7 +29,7 @@ public class CategoriaService {
 
     public void eliminarCategoria(Long categoriaId) {
         if (categoriaId == null) {
-            throw new IdNullException("El ID de la categoría no puede ser nulo.");
+            throw new IllegalArgumentException("El ID de la categoría no puede ser nulo.");
         }
         for (Categoria categoria : categorias) {
             if (categoria.getId().equals(categoriaId)) {
@@ -41,17 +41,15 @@ public class CategoriaService {
     }
 
     public void agregarCategoria(Categoria categoria) {
-
+        if (categoria == null) {
+            throw new IllegalArgumentException("La categoría no puede ser nula.");
+        }
         for (Categoria categoriaAgregar : categorias) {
-            if(categoria == null){
-                throw new NullException("La categoria no puede ser nula");
-            }
             if (categoriaAgregar.getId().equals(categoria.getId())) {
-                throw new IdDuplicadoException("la categoria ya existe y el ID es: " + categoria.getId());
+                throw new IdDuplicadoException("La categoria ya existe y el ID es: " + categoria.getId());
             }
         }
         categorias.add(categoria);
-
     }
 
     public void editarCategoria(Long categoriaId, String nombre, String descripcion) {
