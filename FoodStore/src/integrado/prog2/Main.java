@@ -2,47 +2,247 @@ package integrado.prog2;
 
 import integrado.prog2.entities.Categoria;
 import integrado.prog2.entities.Producto;
+import integrado.prog2.exception.IdDuplicadoException;
+import integrado.prog2.exception.IdEliminadoException;
+import integrado.prog2.exception.IdNoEncontradoException;
 import integrado.prog2.service.CategoriaService;
 import integrado.prog2.service.ProductoService;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
+    /*
+     * public static void main(String[] args) {
+     * ProductoService pService = new ProductoService();
+     * CategoriaService cService = new CategoriaService();
+     * System.out.println("Sistema Food Store iniciado");
+     * Categoria c = new Categoria(1l, "postre", "postres frios");
+     * Categoria c1 = new Categoria(2l, "cocas", "cocas frios 3l");
+     * Producto p = new Producto(1l, "helado", 100.00, "palito bombom", 2,
+     * "helado.png", true, c);
+     * Producto p1 = new Producto(2l, "heladoss", 100.00, "palito bombom", 2,
+     * "helado.png", true, c);
+     * 
+     * cService.agregarCategoria(c);
+     * cService.agregarCategoria(c1);
+     * pService.agregarProducto(p);
+     * pService.agregarProducto(p1);
+     * 
+     * // pService.eliminarProducto(1l);
+     * cService.eliminarCategoria(2l);
+     * 
+     * // cService.editarCategoria(1l, "helados", "palitos bombones");
+     * 
+     * pService.editarProducto(1l, 300, 10, c);
+     * pService.editarProducto(2l, 300, 10, c);
+     * 
+     * List<Producto> pLi = pService.listarProductos();
+     * for (Producto producto : pLi) {
+     * System.out.println(producto + " " + producto.getCategoria());
+     * }
+     * List<Categoria> cLi = cService.listarCategorias();
+     * for (Categoria categoria : cLi) {
+     * System.out.println(categoria);
+     * }
+     * 
+     * }
+     */
+
     public static void main(String[] args) {
-        ProductoService pService = new ProductoService();
+        // Inicializamos los services
         CategoriaService cService = new CategoriaService();
-        System.out.println("Sistema Food Store iniciado");
-        Categoria c = new Categoria(1l, "postre", "postres frios");
-        Categoria c1 = new Categoria(2l, "cocas", "cocas frios 3l");
-        Producto p = new Producto(1l, "helado", 100.00, "palito bombom", 2, "helado.png", true, c);
-        Producto p1 = new Producto(2l, "heladoss", 100.00, "palito bombom", 2, "helado.png", true, c);
-        
-        
-       cService.agregarCategoria(c);
-       cService.agregarCategoria(c1);
-       pService.agregarProducto(p);
-       pService.agregarProducto(p1);
-       
-       //pService.eliminarProducto(1l);
-       cService.eliminarCategoria(2l);
-       
-       //cService.editarCategoria(1l, "helados", "palitos bombones");
-       
-       pService.editarProducto(1l, 300, 10, c);
-       pService.editarProducto(2l, 300, 10, c);
-       
-       
-       List<Producto> pLi = pService.listarProductos();
-        for (Producto producto : pLi) {
-            System.out.println(producto +" "+producto.getCategoria());
-        }
-       List<Categoria> cLi = cService.listarCategorias();
-        for (Categoria categoria : cLi) {
-            System.out.println(categoria);   
-        }
-        
-        
-        
-       
+        ProductoService pService = new ProductoService();
+
+        // Inicializamos el Scanner para leer entradas del usuario
+        Scanner scanner = new Scanner(System.in);
+
+        int opcion;
+        do {
+            // Mostramos el menú principal
+            System.out.println("\n=== SISTEMA DE PEDIDOS (FOOD STORE) ===");
+            System.out.println("1. Categorías");
+            System.out.println("2. Productos");
+            System.out.println("3. Usuarios");
+            System.out.println("4. Pedidos");
+            System.out.println("0. Salir");
+            System.out.print("Seleccione: ");
+            opcion = scanner.nextInt();
+
+            switch (opcion) {
+                case 1:
+                    menuCategorias(scanner, cService);
+                    break;
+                case 2:
+                    // menuProductos(scanner, pService, cService);
+                    break;
+                case 3:
+                    // menuUsuarios(scanner, uService);
+                    break;
+                case 4:
+                    // menuPedidos(scanner, pedService, uService, pService);
+                    break;
+                case 0:
+                    System.out.println("¡Hasta luego!");
+                    break;
+                default:
+                    System.out.println("Opción inválida. Intente nuevamente.");
+            }
+        } while (opcion != 0);
+
+        // Cerramos el Scanner al salir
+        scanner.close();
+    }
+
+    private static void menuCategorias(Scanner scanner, CategoriaService cService) {
+        int opcion;
+
+        do {
+            // Mostramos las opciones disponibles del submenú de categorías
+            System.out.println("\n=== CATEGORÍAS ===");
+            System.out.println("1. Listar categorías");
+            System.out.println("2. Agregar categoría");
+            System.out.println("3. Editar categoría");
+            System.out.println("4. Eliminar categoría");
+            System.out.println("0. Volver");
+            System.out.print("Seleccione: ");
+            opcion = scanner.nextInt();
+
+            switch (opcion) {
+
+                case 1:
+                    // Obtenemos la lista de categorías no eliminadas a través del service
+                    List<Categoria> categorias = cService.listarCategorias();
+                    if (categorias.isEmpty()) {
+                        System.out.println("No hay categorías cargadas.");
+                    } else {
+                        // Recorremos e imprimimos cada categoría usando su toString()
+                        for (Categoria categoria : categorias) {
+                            System.out.println(categoria);
+                        }
+                    }
+                    break;
+
+                case 2:
+                    try {
+                        // Limpiamos el buffer después de leer el número de opción
+                        scanner.nextLine();
+
+                        // Solicitamos los datos de la nueva categoría al usuario
+                        System.out.print("Ingrese el ID: ");
+                        Long id = scanner.nextLong();
+                        scanner.nextLine(); // Limpiamos el buffer después de leer el Long
+
+                        System.out.print("Ingrese el nombre: ");
+                        String nombre = scanner.nextLine();
+
+                        System.out.print("Ingrese la descripción: ");
+                        String descripcion = scanner.nextLine();
+
+                        // Creamos el objeto Categoria con los datos ingresados
+                        // En este punto se ejecutan las validaciones del constructor
+                        Categoria nuevaCategoria = new Categoria(id, nombre, descripcion);
+
+                        // Delegamos al service la lógica de agregar y validar duplicados
+                        cService.agregarCategoria(nuevaCategoria);
+                        System.out.println("Categoría agregada correctamente con ID: " + id);
+
+                    } catch (IdDuplicadoException e) {
+                        // El service detectó que ya existe una categoría con ese ID
+                        System.out.println("Error: " + e.getMessage());
+                    } catch (IllegalArgumentException e) {
+                        // El constructor detectó datos inválidos (nombre vacío, ID inválido, etc.)
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                    break;
+
+                case 3:
+                    // Mostramos las categorías disponibles para que el usuario sepa qué ID ingresar
+                    List<Categoria> categoriasEditar = cService.listarCategorias();
+                    if (categoriasEditar.isEmpty()) {
+                        System.out.println("No hay categorías cargadas.");
+                    } else {
+                        for (Categoria categoria : categoriasEditar) {
+                            System.out.println(categoria);
+                        }
+                        try {
+                            scanner.nextLine();
+
+                            // Solicitamos el ID de la categoría a editar y los nuevos datos
+                            System.out.print("Ingrese el ID de la categoría a editar: ");
+                            Long id = scanner.nextLong();
+                            scanner.nextLine();
+
+                            System.out.print("Ingrese el nuevo nombre: ");
+                            String nombre = scanner.nextLine();
+
+                            System.out.print("Ingrese la nueva descripción: ");
+                            String descripcion = scanner.nextLine();
+
+                            // El service valida que el ID exista y no esté eliminado antes de editar
+                            cService.editarCategoria(id, nombre, descripcion);
+                            System.out.println("Categoría con ID: " + id + " editada correctamente.");
+
+                        } catch (IdNoEncontradoException e) {
+                            // El service no encontró ninguna categoría con ese ID
+                            System.out.println("Error: " + e.getMessage());
+                        } catch (IdEliminadoException e) {
+                            // La categoría existe pero fue dada de baja lógicamente
+                            System.out.println("Error: " + e.getMessage());
+                        } catch (IllegalArgumentException e) {
+                            // Los nuevos datos ingresados son inválidos
+                            System.out.println("Error: " + e.getMessage());
+                        }
+                    }
+                    break;
+
+                case 4:
+                    // Mostramos las categorías disponibles para que el usuario sepa qué ID ingresar
+                    List<Categoria> categoriasEliminar = cService.listarCategorias();
+                    if (categoriasEliminar.isEmpty()) {
+                        System.out.println("No hay categorías cargadas.");
+                    } else {
+                        for (Categoria categoria : categoriasEliminar) {
+                            System.out.println(categoria);
+                        }
+                        try {
+                            scanner.nextLine();
+                            System.out.print("Ingrese el ID de la categoría a eliminar: ");
+                            Long id = scanner.nextLong();
+                            scanner.nextLine();
+
+                            // Pedimos confirmación antes de realizar la baja lógica
+                            System.out.print("¿Está seguro? (S/N): ");
+                            String confirmacion = scanner.nextLine();
+
+                            if (confirmacion.equalsIgnoreCase("S")) {
+                                // El service marca eliminado = true sin borrar físicamente el objeto
+                                cService.eliminarCategoria(id);
+                                System.out.println("Categoría con ID: " + id + " eliminada correctamente.");
+                            } else {
+                                System.out.println("Operación cancelada.");
+                            }
+                        } catch (IdNoEncontradoException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        } catch (IdEliminadoException e) {
+                            // La categoría ya había sido eliminada previamente
+                            System.out.println("Error: " + e.getMessage());
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        }
+                    }
+                    break;
+
+                case 0:
+                    // El usuario eligió volver al menú principal
+                    System.out.println("Volviendo al menú principal...");
+                    break;
+
+                default:
+                    // El usuario ingresó un número que no corresponde a ninguna opción
+                    System.out.println("Opción inválida. Intente nuevamente.");
+            }
+
+        } while (opcion != 0); // El menú se repite hasta que el usuario elija 0
     }
 }
