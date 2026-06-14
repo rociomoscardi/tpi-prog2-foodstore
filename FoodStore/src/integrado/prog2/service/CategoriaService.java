@@ -29,7 +29,7 @@ public class CategoriaService {
 
     public void eliminarCategoria(Long categoriaId) {
         if (categoriaId == null) {
-            throw new IllegalArgumentException("El ID de la categoría no puede ser nulo.");
+            throw new IdNullException("El ID de la categoría no puede ser nulo.");
         }
         for (Categoria categoria : categorias) {
             if (categoria.getId().equals(categoriaId)) {
