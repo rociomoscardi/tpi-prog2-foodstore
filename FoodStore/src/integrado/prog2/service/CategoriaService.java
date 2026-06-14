@@ -20,22 +20,25 @@ public class CategoriaService {
     public List<Categoria> listarCategorias() {
         List<Categoria> categoriasDisponibles = new ArrayList<>();
         for (Categoria categoriaDisponible : categorias) {
-            if (!categoriaDisponible.isEliminado()==true) {
+            if (!categoriaDisponible.isEliminado() == true) {
                 categoriasDisponibles.add(categoriaDisponible);
             }
-          // System.out.println(categoriaDisponible);
+            // System.out.println(categoriaDisponible);
         }
         return categoriasDisponibles;
     }
 
     public void eliminarCategoria(Long categoriaId) {
+        if (categoriaId == null) {
+            throw new IllegalArgumentException("El ID de la categoría no puede ser nulo.");
+        }
         for (Categoria categoria : categorias) {
             if (categoria.getId().equals(categoriaId)) {
-                categoria.setEliminado(true);
-
+                categoria.eliminar();
+                return;
             }
         }
-
+        throw new IdNoEncontradoExcepcion("La categoria con ID: " + categoriaId + " no se encontró.");
     }
 
     public void agregarCategoria(Categoria categoria) {
@@ -54,7 +57,8 @@ public class CategoriaService {
             if (categoriaEditar.getId().equals(categoriaId)) {
 
                 if (categoriaEditar.isEliminado() == true) {
-                    throw new IdEliminadoExecption("El ID: " + categoriaEditar.getId() + " fue removido de la lista y no se puede editar.");
+                    throw new IdEliminadoExecption(
+                            "El ID: " + categoriaEditar.getId() + " fue removido de la lista y no se puede editar.");
                 }
 
                 categoriaEditar.setNombre(nombre);
