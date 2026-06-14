@@ -24,7 +24,7 @@ public class Main {
        pService.agregarProducto(p1);
        
        //pService.eliminarProducto(1l);
-       cService.elimiarCategoria(2l);
+       cService.eliminarCategoria(2l);
        
        //cService.editarCategoria(1l, "helados", "palitos bombones");
        
