@@ -23,7 +23,7 @@ public class ProductoService {
         for (Producto producto : productos) {
             if (producto.getId().equals(nuevoProducto.getId())) {
                 throw new IdDuplicadoException(
-                        "El producto con el ID:" + nuevoProducto.getId() + "que quieres agregar ya existe.");
+                        "Ya existe un producto con ID:" + nuevoProducto.getId() + ". No se pueden agregar productos con IDs duplicados.");
             }
         }
         productos.add(nuevoProducto);
@@ -37,13 +37,13 @@ public class ProductoService {
 
             if (productoAEliminar.getId().equals(productoId)) {
                 productoAEliminar.setDisponible(false);
-                productoAEliminar.setEliminado(true);
+                productoAEliminar.eliminar();
 
                 return;
             }
         }
 
-        throw new IdNoEncontradoException("El ID: " + productoId + " no se encontro para eliminar el producto.");
+        throw new IdNoEncontradoException("El ID: " + productoId + " no se encontró para eliminar el producto.");
 
     }
 
@@ -66,14 +66,14 @@ public class ProductoService {
             }
 
         }
-        throw new IdNoEncontradoException("Error. El ID:" + productoId + " no se encontro.");
+        throw new IdNoEncontradoException("Error. El ID:" + productoId + " no se encontró.");
 
     }
 
     public List<Producto> listarProductos() {
         List<Producto> productosDisponibles = new ArrayList<>();
         for (Producto producto : productos) {
-            if (producto.getDisponible() == true && producto.isEliminado() == false) {
+            if (producto.getDisponible() && !producto.isEliminado()) {
                 productosDisponibles.add(producto);
             }
         }
