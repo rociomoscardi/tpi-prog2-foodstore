@@ -8,7 +8,7 @@ package integrado.prog2.exception;
  *
  * @author fernando
  */
-public class IdNoEncontradoException extends RuntimeException{
+public class IdNoEncontradoException extends RuntimeException {
 
     public IdNoEncontradoException() {
     }
@@ -24,7 +24,5 @@ public class IdNoEncontradoException extends RuntimeException{
     public IdNoEncontradoException(Throwable cause) {
         super(cause);
     }
-    
-    
-    
+
 }

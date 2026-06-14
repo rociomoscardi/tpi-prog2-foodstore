@@ -8,7 +8,7 @@ package integrado.prog2.exception;
  *
  * @author fernando
  */
-public class IdDuplicadoException extends RuntimeException{
+public class IdDuplicadoException extends RuntimeException {
 
     public IdDuplicadoException() {
     }
@@ -24,7 +24,5 @@ public class IdDuplicadoException extends RuntimeException{
     public IdDuplicadoException(Throwable cause) {
         super(cause);
     }
-    
-    
-    
+
 }

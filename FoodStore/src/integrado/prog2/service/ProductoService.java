@@ -22,7 +22,8 @@ public class ProductoService {
     public void agregarProducto(Producto nuevoProducto) {
         for (Producto producto : productos) {
             if (producto.getId().equals(nuevoProducto.getId())) {
-                throw new IdDuplicadoException("El producto con el ID:" + nuevoProducto.getId() +  "que quieres agregar ya existe.");
+                throw new IdDuplicadoException(
+                        "El producto con el ID:" + nuevoProducto.getId() + "que quieres agregar ya existe.");
             }
         }
         productos.add(nuevoProducto);
@@ -37,7 +38,7 @@ public class ProductoService {
             if (productoAEliminar.getId().equals(productoId)) {
                 productoAEliminar.setDisponible(false);
                 productoAEliminar.setEliminado(true);
-              
+
                 return;
             }
         }
@@ -48,41 +49,35 @@ public class ProductoService {
 
     public void editarProducto(Long productoId, double precio, int stock, Categoria categoria) {
         for (Producto productoActualizar : productos) {
-            
+
             if (productoActualizar.getId().equals(productoId)) {
-                
-                if(productoActualizar.isEliminado()==true){
-                    throw new IdEliminadoException("El producto con el ID:"+ productoId + " fue removido de la lista y no se puede editar");
+
+                if (productoActualizar.isEliminado() == true) {
+                    throw new IdEliminadoException(
+                            "El producto con el ID:" + productoId + " fue removido de la lista y no se puede editar");
                 }
-                
+
                 productoActualizar.setPrecio(precio);
                 productoActualizar.setStock(stock);
                 productoActualizar.setCategoria(categoria);
-                
-               
+
                 return;
-                
+
             }
-            
-           
-            
-            
+
         }
-        throw new IdNoEncontradoException("Error. El ID:" + productoId + " no se encontro." );
+        throw new IdNoEncontradoException("Error. El ID:" + productoId + " no se encontro.");
 
     }
-    
-    
-    
-    public List<Producto> listarProductos(){
+
+    public List<Producto> listarProductos() {
         List<Producto> productosDisponibles = new ArrayList<>();
         for (Producto producto : productos) {
-            if(producto.getDisponible()==true && producto.isEliminado() == false){
+            if (producto.getDisponible() == true && producto.isEliminado() == false) {
                 productosDisponibles.add(producto);
             }
         }
-        
-        
+
         return productosDisponibles;
     }
 
