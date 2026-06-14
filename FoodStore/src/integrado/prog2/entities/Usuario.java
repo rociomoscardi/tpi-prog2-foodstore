@@ -21,7 +21,7 @@ public class Usuario extends Base {
     }
 
     public Usuario(Long id, String nombre, String apellido, String mail,
-                   String celular, String contrasena, Rol rol) {
+            String celular, String contrasena, Rol rol) {
         super(id);
         setNombre(nombre);
         setApellido(apellido);
