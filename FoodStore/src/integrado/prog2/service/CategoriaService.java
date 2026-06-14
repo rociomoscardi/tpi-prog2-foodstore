@@ -28,7 +28,7 @@ public class CategoriaService {
         return categoriasDisponibles;
     }
 
-    public void elimiarCategoria(Long categoriaId) {
+    public void eliminarCategoria(Long categoriaId) {
         for (Categoria categoria : categorias) {
             if (categoria.getId().equals(categoriaId)) {
                 categoria.setEliminado(true);
