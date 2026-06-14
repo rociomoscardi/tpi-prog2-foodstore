@@ -20,10 +20,9 @@ public class CategoriaService {
     public List<Categoria> listarCategorias() {
         List<Categoria> categoriasDisponibles = new ArrayList<>();
         for (Categoria categoriaDisponible : categorias) {
-            if (!categoriaDisponible.isEliminado() == true) {
+            if (!categoriaDisponible.isEliminado()) {
                 categoriasDisponibles.add(categoriaDisponible);
             }
-            // System.out.println(categoriaDisponible);
         }
         return categoriasDisponibles;
     }
