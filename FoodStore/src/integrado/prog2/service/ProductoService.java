@@ -22,7 +22,7 @@ public class ProductoService {
     public void agregarProducto(Producto nuevoProducto) {
         for (Producto producto : productos) {
             if (producto.getId().equals(nuevoProducto.getId())) {
-                throw new IdDuplicadoExcepcion("El producto con el ID:" + nuevoProducto.getId() +  "que quieres agregar ya existe.");
+                throw new IdDuplicadoException("El producto con el ID:" + nuevoProducto.getId() +  "que quieres agregar ya existe.");
             }
         }
         productos.add(nuevoProducto);

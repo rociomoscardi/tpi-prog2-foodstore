@@ -45,7 +45,7 @@ public class CategoriaService {
 
         for (Categoria categoriaAgregar : categorias) {
             if (categoriaAgregar.getId().equals(categoria.getId())) {
-                throw new IdDuplicadoExcepcion("la categoria ya existe y el ID es: " + categoria.getId());
+                throw new IdDuplicadoException("la categoria ya existe y el ID es: " + categoria.getId());
             }
         }
         categorias.add(categoria);
