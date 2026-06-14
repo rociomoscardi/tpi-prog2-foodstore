@@ -38,7 +38,7 @@ public class CategoriaService {
                 return;
             }
         }
-        throw new IdNoEncontradoExcepcion("La categoria con ID: " + categoriaId + " no se encontró.");
+        throw new IdNoEncontradoException("La categoria con ID: " + categoriaId + " no se encontró.");
     }
 
     public void agregarCategoria(Categoria categoria) {
@@ -66,7 +66,7 @@ public class CategoriaService {
                 return;
             }
         }
-        throw new IdNoEncontradoExcepcion("La categoria con ID:" + categoriaId + " no se encontro para editar");
+        throw new IdNoEncontradoException("La categoria con ID:" + categoriaId + " no se encontro para editar");
 
     }
 

@@ -42,7 +42,7 @@ public class ProductoService {
             }
         }
 
-        throw new IdNoEncontradoExcepcion("El ID: " + productoId + " no se encontro para eliminar el producto.");
+        throw new IdNoEncontradoException("El ID: " + productoId + " no se encontro para eliminar el producto.");
 
     }
 
@@ -68,7 +68,7 @@ public class ProductoService {
             
             
         }
-        throw new IdNoEncontradoExcepcion("Error. El ID:" + productoId + " no se encontro." );
+        throw new IdNoEncontradoException("Error. El ID:" + productoId + " no se encontro." );
 
     }
     
