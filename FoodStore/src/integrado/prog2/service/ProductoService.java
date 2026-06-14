@@ -22,7 +22,7 @@ public class ProductoService {
     public void agregarProducto(Producto nuevoProducto) {
         for (Producto producto : productos) {
             if (producto.getId().equals(nuevoProducto.getId())) {
-                throw new IdDuplicadoExcepcion("El producto con el ID:" + nuevoProducto.getId() +  "que quieres agregar ya existe.");
+                throw new IdDuplicadoException("El producto con el ID:" + nuevoProducto.getId() +  "que quieres agregar ya existe.");
             }
         }
         productos.add(nuevoProducto);
@@ -42,7 +42,7 @@ public class ProductoService {
             }
         }
 
-        throw new IdNoEncontradoExcepcion("El ID: " + productoId + " no se encontro para eliminar el producto.");
+        throw new IdNoEncontradoException("El ID: " + productoId + " no se encontro para eliminar el producto.");
 
     }
 
@@ -52,7 +52,7 @@ public class ProductoService {
             if (productoActualizar.getId().equals(productoId)) {
                 
                 if(productoActualizar.isEliminado()==true){
-                    throw new IdEliminadoExecption("El producto con el ID:"+ productoId + " fue removido de la lista y no se puede editar");
+                    throw new IdEliminadoException("El producto con el ID:"+ productoId + " fue removido de la lista y no se puede editar");
                 }
                 
                 productoActualizar.setPrecio(precio);
@@ -68,7 +68,7 @@ public class ProductoService {
             
             
         }
-        throw new IdNoEncontradoExcepcion("Error. El ID:" + productoId + " no se encontro." );
+        throw new IdNoEncontradoException("Error. El ID:" + productoId + " no se encontro." );
 
     }
     

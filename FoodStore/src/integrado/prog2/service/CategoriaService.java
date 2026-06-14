@@ -38,14 +38,14 @@ public class CategoriaService {
                 return;
             }
         }
-        throw new IdNoEncontradoExcepcion("La categoria con ID: " + categoriaId + " no se encontró.");
+        throw new IdNoEncontradoException("La categoria con ID: " + categoriaId + " no se encontró.");
     }
 
     public void agregarCategoria(Categoria categoria) {
 
         for (Categoria categoriaAgregar : categorias) {
             if (categoriaAgregar.getId().equals(categoria.getId())) {
-                throw new IdDuplicadoExcepcion("la categoria ya existe y el ID es: " + categoria.getId());
+                throw new IdDuplicadoException("la categoria ya existe y el ID es: " + categoria.getId());
             }
         }
         categorias.add(categoria);
@@ -57,7 +57,7 @@ public class CategoriaService {
             if (categoriaEditar.getId().equals(categoriaId)) {
 
                 if (categoriaEditar.isEliminado() == true) {
-                    throw new IdEliminadoExecption(
+                    throw new IdEliminadoException(
                             "El ID: " + categoriaEditar.getId() + " fue removido de la lista y no se puede editar.");
                 }
 
@@ -66,7 +66,7 @@ public class CategoriaService {
                 return;
             }
         }
-        throw new IdNoEncontradoExcepcion("La categoria con ID:" + categoriaId + " no se encontro para editar");
+        throw new IdNoEncontradoException("La categoria con ID:" + categoriaId + " no se encontro para editar");
 
     }
 

@@ -8,20 +8,20 @@ package integrado.prog2.exception;
  *
  * @author fernando
  */
-public class IdNoEncontradoExcepcion extends RuntimeException{
+public class IdDuplicadoException extends RuntimeException{
 
-    public IdNoEncontradoExcepcion() {
+    public IdDuplicadoException() {
     }
 
-    public IdNoEncontradoExcepcion(String message) {
+    public IdDuplicadoException(String message) {
         super(message);
     }
 
-    public IdNoEncontradoExcepcion(String message, Throwable cause) {
+    public IdDuplicadoException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public IdNoEncontradoExcepcion(Throwable cause) {
+    public IdDuplicadoException(Throwable cause) {
         super(cause);
     }
     
