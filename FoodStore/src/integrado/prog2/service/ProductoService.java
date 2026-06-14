@@ -21,6 +21,9 @@ public class ProductoService {
 
     public void agregarProducto(Producto nuevoProducto) {
         for (Producto producto : productos) {
+            if(nuevoProducto == null){
+                throw new NullException("El producto no puede ser nulo.");
+            }
             if (producto.getId().equals(nuevoProducto.getId())) {
                 throw new IdDuplicadoException(
                         "Ya existe un producto con ID:" + nuevoProducto.getId() + ". No se pueden agregar productos con IDs duplicados.");
