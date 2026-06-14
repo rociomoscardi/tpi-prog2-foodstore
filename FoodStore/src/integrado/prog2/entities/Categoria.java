@@ -62,12 +62,9 @@ public class Categoria extends Base {
     }
 
     @Override
-    public String toString() {
-        return "Categoria{" +
-                "id=" + getId() +
-                ", nombre='" + nombre + '\'' +
-                ", descripcion='" + descripcion + '\'' +
-                ", eliminado=" + isEliminado() +
-                '}';
-    }
+public String toString() {
+    return "ID: " + getId() +
+           " | " + nombre +
+           " - " + descripcion;
+}
 }
