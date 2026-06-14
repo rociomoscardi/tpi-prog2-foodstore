@@ -73,7 +73,7 @@ public class ProductoService {
     public List<Producto> listarProductos() {
         List<Producto> productosDisponibles = new ArrayList<>();
         for (Producto producto : productos) {
-            if (producto.getDisponible() == true && producto.isEliminado() == false) {
+            if (producto.getDisponible() && !producto.isEliminado()) {
                 productosDisponibles.add(producto);
             }
         }
