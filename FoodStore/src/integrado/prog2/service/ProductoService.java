@@ -52,7 +52,7 @@ public class ProductoService {
             if (productoActualizar.getId().equals(productoId)) {
                 
                 if(productoActualizar.isEliminado()==true){
-                    throw new IdEliminadoExecption("El producto con el ID:"+ productoId + " fue removido de la lista y no se puede editar");
+                    throw new IdEliminadoException("El producto con el ID:"+ productoId + " fue removido de la lista y no se puede editar");
                 }
                 
                 productoActualizar.setPrecio(precio);

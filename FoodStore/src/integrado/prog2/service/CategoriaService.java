@@ -57,7 +57,7 @@ public class CategoriaService {
             if (categoriaEditar.getId().equals(categoriaId)) {
 
                 if (categoriaEditar.isEliminado() == true) {
-                    throw new IdEliminadoExecption(
+                    throw new IdEliminadoException(
                             "El ID: " + categoriaEditar.getId() + " fue removido de la lista y no se puede editar.");
                 }
 

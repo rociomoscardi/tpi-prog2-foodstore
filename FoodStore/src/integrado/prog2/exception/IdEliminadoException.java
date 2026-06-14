@@ -8,20 +8,20 @@ package integrado.prog2.exception;
  *
  * @author fernando
  */
-public class IdEliminadoExecption extends RuntimeException{
+public class IdEliminadoException extends RuntimeException{
 
-    public IdEliminadoExecption() {
+    public IdEliminadoException() {
     }
 
-    public IdEliminadoExecption(String message) {
+    public IdEliminadoException(String message) {
         super(message);
     }
 
-    public IdEliminadoExecption(String message, Throwable cause) {
+    public IdEliminadoException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public IdEliminadoExecption(Throwable cause) {
+    public IdEliminadoException(Throwable cause) {
         super(cause);
     }
     
