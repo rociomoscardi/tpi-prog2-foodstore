@@ -2,26 +2,26 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Exceptions;
+package integrado.prog2.exception;
 
 /**
  *
  * @author fernando
  */
-public class IdDuplicadoExcepcion extends RuntimeException{
+public class IdNoEncontradoExcepcion extends RuntimeException{
 
-    public IdDuplicadoExcepcion() {
+    public IdNoEncontradoExcepcion() {
     }
 
-    public IdDuplicadoExcepcion(String message) {
+    public IdNoEncontradoExcepcion(String message) {
         super(message);
     }
 
-    public IdDuplicadoExcepcion(String message, Throwable cause) {
+    public IdNoEncontradoExcepcion(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public IdDuplicadoExcepcion(Throwable cause) {
+    public IdNoEncontradoExcepcion(Throwable cause) {
         super(cause);
     }
     
