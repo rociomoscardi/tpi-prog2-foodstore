@@ -20,13 +20,14 @@ public class ProductoService {
     private List<Producto> productos = new ArrayList<>();
 
     public void agregarProducto(Producto nuevoProducto) {
+        if (nuevoProducto == null) {
+            throw new IllegalArgumentException("El producto no puede ser nulo.");
+        }
         for (Producto producto : productos) {
-            if(nuevoProducto == null){
-                throw new NullException("El producto no puede ser nulo.");
-            }
             if (producto.getId().equals(nuevoProducto.getId())) {
                 throw new IdDuplicadoException(
-                        "Ya existe un producto con ID:" + nuevoProducto.getId() + ". No se pueden agregar productos con IDs duplicados.");
+                        "Ya existe un producto con ID:" + nuevoProducto.getId()
+                                + ". No se pueden agregar productos con IDs duplicados.");
             }
         }
         productos.add(nuevoProducto);
