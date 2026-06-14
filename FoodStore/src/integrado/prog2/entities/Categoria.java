@@ -29,7 +29,8 @@ public class Categoria extends Base {
         if (nombre == null || nombre.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre de la categoría no puede estar vacío.");
         }
-        this.nombre = nombre;
+        // Aplicamos trim para eliminar espacios y toTitleCase para capitalizar
+        this.nombre = toTitleCase(nombre.trim());
     }
 
     public String getDescripcion() {
@@ -40,7 +41,8 @@ public class Categoria extends Base {
         if (descripcion == null || descripcion.trim().isEmpty()) {
             throw new IllegalArgumentException("La descripción de la categoría no puede estar vacía.");
         }
-        this.descripcion = descripcion;
+        // Aplicamos trim para eliminar espacios y toTitleCase para capitalizar
+        this.descripcion = toTitleCase(descripcion.trim());
     }
 
     public List<Producto> getProductos() {
@@ -61,13 +63,17 @@ public class Categoria extends Base {
         this.productos.add(producto);
     }
 
+    // Convierte la primera letra a mayúscula y el resto a minúscula
+    private String toTitleCase(String texto) {
+        if (texto == null || texto.isEmpty())
+            return texto;
+        return Character.toUpperCase(texto.charAt(0)) + texto.substring(1).toLowerCase();
+    }
+
     @Override
     public String toString() {
-        return "Categoria{" +
-                "id=" + getId() +
-                ", nombre='" + nombre + '\'' +
-                ", descripcion='" + descripcion + '\'' +
-                ", eliminado=" + isEliminado() +
-                '}';
+        return "ID: " + getId() +
+                " | " + nombre +
+                " - " + descripcion;
     }
 }
