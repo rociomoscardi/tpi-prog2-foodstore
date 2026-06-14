@@ -70,4 +70,15 @@ public class CategoriaService {
 
     }
 
+    // Busca una categoría por su ID en la colección. Devuelve la categoría si la
+    // encuentra, o null si no existe.
+    public Categoria buscarPorId(Long id) {
+        for (Categoria categoria : categorias) {
+            if (categoria.getId().equals(id)) {
+                return categoria;
+            }
+        }
+        return null;
+    }
+
 }
