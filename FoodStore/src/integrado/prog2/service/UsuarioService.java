@@ -55,15 +55,11 @@ public class UsuarioService {
     // 5. Utilidad: Buscar un usuario por su ID
     // Nos ayuda a encontrarlo para después editarlo o eliminarlo lógicamente
     public Usuario buscarPorId(Long id) {
-        // Recorremos nuestra lista de usuarios uno por uno
-        for (Usuario u : listaUsuarios) {
-            // Comparamos el ID del usuario u con el ID que buscamos
-            if (u.getId().equals(id)) {
-                return u; //
+        for (Usuario usuario : listaUsuarios) {
+            if (usuario.getId().equals(id)) {
+                return usuario;
             }
         }
-        // Recorrimos toda la lista y no encontramos ninguna coincidencia
-        System.out.println("DEBUG Error: No se encontró usuario con ID: " + id);
         return null;
     }
 
