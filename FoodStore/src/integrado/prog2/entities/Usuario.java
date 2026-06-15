@@ -123,14 +123,10 @@ public class Usuario extends Base {
 
     @Override
     public String toString() {
-        return "Usuario{" +
-                "id=" + getId() +
-                ", nombre='" + nombre + '\'' +
-                ", apellido='" + apellido + '\'' +
-                ", mail='" + mail + '\'' +
-                ", celular='" + celular + '\'' +
-                ", rol=" + rol +
-                ", eliminado=" + isEliminado() +
-                '}';
+        return "ID: " + getId() +
+                " | " + nombre + " " + apellido +
+                " | Mail: " + mail +
+                " | Celular: " + celular +
+                " | Rol: " + rol;
     }
 }
