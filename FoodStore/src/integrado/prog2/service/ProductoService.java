@@ -85,4 +85,13 @@ public class ProductoService {
         return productosDisponibles;
     }
 
+public Producto buscarPorId(Long idProd) {
+        for (Producto producto : productos) {
+            if (producto.getId().equals(idProd)) {
+                return producto;
+            }
+        }
+        return null;
+    }
+
 }

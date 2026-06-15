@@ -32,6 +32,12 @@ public class Usuario extends Base {
         this.pedidos = new ArrayList<>();
     }
 
+public Usuario(Long id, String nombre, String mail) {
+    this.setId(id);
+    this.setNombre(nombre);
+    this.setMail(mail);
+}
+
     public String getNombre() {
         return nombre;
     }
