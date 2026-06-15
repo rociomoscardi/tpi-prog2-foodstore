@@ -85,12 +85,10 @@ public class UsuarioService {
     // Busca al usuario por su ID y, si lo encuentra, lo quita del almacén
     public void eliminarUsuario(Long id) {
         Usuario usuarioAEliminar = buscarPorId(id);
-
-        if (usuarioAEliminar != null) {
-            // Usamos el método .remove() de las Listas de Java para borrarlo
-            this.listaUsuarios.remove(usuarioAEliminar);
-            System.out.println("DEBUG: Usuario con ID: " + id + " eliminado correctamente.");
+        if (usuarioAEliminar == null) {
+            throw new IdNoEncontradoException("No se encontró un usuario con ID: " + id);
         }
+        usuarioAEliminar.eliminar();
     }
 
 }
