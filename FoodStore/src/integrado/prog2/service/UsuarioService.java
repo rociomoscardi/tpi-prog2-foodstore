@@ -6,6 +6,8 @@ package integrado.prog2.service;
 
 import integrado.prog2.entities.Usuario;
 import integrado.prog2.exception.IdDuplicadoException;
+import integrado.prog2.exception.IdEliminadoException;
+import integrado.prog2.exception.IdNoEncontradoException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,18 +69,16 @@ public class UsuarioService {
 
     // 6. Actualizar: Método para editar los datos de un usuario existente
     // Usa buscarPorId para encontrarlo y, si existe, cambia sus datos
-    public void editarUsuario(Long id, String nuevoNombre, String nuevomail) {
-        // Primero, usamos nuestro buscador para encontrar el usuario
+    public void editarUsuario(Long id, String nuevoNombre, String nuevoMail) {
         Usuario usuarioAEditar = buscarPorId(id);
-
-        // Si lo encontramos (es distinto de null)
-        if (usuarioAEditar != null) {
-            // Hacemos los cambios usando los métodos 'set' de la entidad Usuario
-            usuarioAEditar.setNombre(nuevoNombre);
-            usuarioAEditar.setMail(nuevomail);
-            System.out.println("DEBUG: Usuario con ID: " + id + " editado correctamente.");
-        } else {
+        if (usuarioAEditar == null) {
+            throw new IdNoEncontradoException("No se encontró un usuario con ID: " + id);
         }
+        if (usuarioAEditar.isEliminado()) {
+            throw new IdEliminadoException("El usuario con ID: " + id + " fue eliminado y no se puede editar.");
+        }
+        usuarioAEditar.setNombre(nuevoNombre);
+        usuarioAEditar.setMail(nuevoMail);
     }
 
     // 7. Eliminar: Método para borrar un usuario de la lista
