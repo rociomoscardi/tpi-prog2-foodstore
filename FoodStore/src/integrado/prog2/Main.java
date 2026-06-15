@@ -7,6 +7,7 @@ import integrado.prog2.exception.IdEliminadoException;
 import integrado.prog2.exception.IdNoEncontradoException;
 import integrado.prog2.service.CategoriaService;
 import integrado.prog2.service.ProductoService;
+import integrado.prog2.service.UsuarioService;
 import java.util.List;
 import java.util.Scanner;
 
@@ -53,7 +54,8 @@ public class Main {
         // Inicializamos los services
         CategoriaService cService = new CategoriaService();
         ProductoService pService = new ProductoService();
-
+        UsuarioService uService = new UsuarioService();
+        
         // Inicializamos el Scanner para leer entradas del usuario
         Scanner scanner = new Scanner(System.in);
 
