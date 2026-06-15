@@ -24,25 +24,30 @@ public class UsuarioService {
         this.listaUsuarios = new ArrayList<>();
     }
 
-    // 3. Método para agregar un nuevo usuario a la lista
+    // 3. Crear: Método para agregar un nuevo usuario a la lista
     // Recibe el usuario armado desde el menú y lo guarda en nuestro almacén
     public void agregarUsuario(Usuario nuevoUsuario) {
-    if (nuevoUsuario == null) {
-        throw new IllegalArgumentException("El usuario no puede ser nulo.");
-    }
-    for (Usuario u : listaUsuarios) {
-        if (u.getId().equals(nuevoUsuario.getId())) {
-            throw new IdDuplicadoException("Ya existe un usuario con ID: " + nuevoUsuario.getId() + ".");
+        if (nuevoUsuario == null) {
+            throw new IllegalArgumentException("El usuario no puede ser nulo.");
         }
+        for (Usuario u : listaUsuarios) {
+            if (u.getId().equals(nuevoUsuario.getId())) {
+                throw new IdDuplicadoException("Ya existe un usuario con ID: " + nuevoUsuario.getId() + ".");
+            }
+        }
+        this.listaUsuarios.add(nuevoUsuario);
     }
-    this.listaUsuarios.add(nuevoUsuario);
-}
 
     // 4. Leer: Método para obtener la lista completa de usuarios
     // Devuelve nuestro 'almacén' para que el menú lo pueda mostrar
     public List<Usuario> listarUsuarios() {
-        System.out.println("DEBUG: Obteniendo la lista de usuarios (Tamaño: " + listaUsuarios.size() + ")");
-        return this.listaUsuarios;
+        List<Usuario> usuariosActivos = new ArrayList<>();
+        for (Usuario u : listaUsuarios) {
+            if (!u.isEliminado()) {
+                usuariosActivos.add(u);
+            }
+        }
+        return usuariosActivos;
     }
 
     // 5. Utilidad: Buscar un usuario por su ID
