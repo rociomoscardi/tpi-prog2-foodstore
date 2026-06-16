@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package integrado.prog2.service;
 
 import integrado.prog2.entities.Pedido;
@@ -15,32 +11,28 @@ import integrado.prog2.exception.IdNoEncontradoException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Abiga
- */
 public class PedidoService {
-    // 1. Almacén de pedidos
+    // La colección de pedidos se almacena en memoria utilizando una lista
     private final List<Pedido> listaPedidos;
 
     public PedidoService() {
         this.listaPedidos = new ArrayList<>();
     }
 
-    // 2. Crear Pedido (Inicia vacío, solo con Usuario y Forma de Pago)
+    // Crear Pedido (Inicia vacío, solo con Usuario y Forma de Pago)
     public void crearPedido(Pedido nuevoPedido) {
         if (nuevoPedido == null) {
             throw new IllegalArgumentException("El pedido no puede ser nulo.");
         }
         for (Pedido p : listaPedidos) {
             if (p.getId().equals(nuevoPedido.getId())) {
-                throw new IdDuplicadoException("Ya existe un pedido con ID: " + nuevoPedido.getId());
+                throw new IdDuplicadoException("Ya existe un pedido con ID: " + nuevoPedido.getId() + ".");
             }
         }
         this.listaPedidos.add(nuevoPedido);
     }
 
-    // 3. Listar Pedidos Activos
+    // Listar pedidos activos
     public List<Pedido> listarPedidos() {
         List<Pedido> pedidosActivos = new ArrayList<>();
         for (Pedido p : listaPedidos) {
@@ -51,7 +43,7 @@ public class PedidoService {
         return pedidosActivos;
     }
 
-    // 4. Buscar Pedido por ID
+    // Buscar pedido por ID
     public Pedido buscarPorId(Long id) {
         for (Pedido p : listaPedidos) {
             if (p.getId().equals(id)) {
@@ -61,11 +53,11 @@ public class PedidoService {
         return null;
     }
 
-    // 5. Cambiar Estado del Pedido (ej: de PENDIENTE a ENTREGADO)
+    // Cambiar Estado del Pedido (ej: de PENDIENTE a CONFIRMADO)
     public void cambiarEstadoPedido(Long id, Estado nuevoEstado) {
         Pedido pedido = buscarPorId(id);
         if (pedido == null) {
-            throw new IdNoEncontradoException("No se encontró un pedido con ID: " + id);
+            throw new IdNoEncontradoException("No se encontró un pedido con ID: " + id + ".");
         }
         if (pedido.isEliminado()) {
             throw new IdEliminadoException("El pedido con ID: " + id + " está eliminado.");
@@ -78,7 +70,7 @@ public class PedidoService {
     public void cambiarFormaPagoPedido(Long id, FormaPago nuevaFormaPago) {
         Pedido pedido = buscarPorId(id);
         if (pedido == null) {
-            throw new IdNoEncontradoException("No se encontró un pedido con ID: " + id);
+            throw new IdNoEncontradoException("No se encontró un pedido con ID: " + id + ".");
         }
         if (pedido.isEliminado()) {
             throw new IdEliminadoException("El pedido con ID: " + id + " está eliminado.");
@@ -86,22 +78,22 @@ public class PedidoService {
         pedido.setFormaPago(nuevaFormaPago);
     }
 
-    // 6. Eliminar Pedido (Baja Lógica)
+    // Eliminar Pedido (Baja Lógica)
     public void eliminarPedido(Long id) {
         Pedido pedido = buscarPorId(id);
         if (pedido == null) {
-            throw new IdNoEncontradoException("No se encontró un pedido con ID: " + id);
+            throw new IdNoEncontradoException("No se encontró un pedido con ID: " + id + ".");
         }
         pedido.eliminar();
     }
 
-    // 7. --- MÉTODOS PARA GESTIONAR EL CARRITO (Detalles del Pedido) ---
+    // --- MÉTODOS PARA GESTIONAR EL CARRITO (Detalles del Pedido) ---
 
     // Agregar un producto al pedido
     public void agregarProductoAPedido(Long idPedido, Producto producto, int cantidad) {
         Pedido pedido = buscarPorId(idPedido);
         if (pedido == null) {
-            throw new IdNoEncontradoException("No se encontró un pedido con ID: " + idPedido);
+            throw new IdNoEncontradoException("No se encontró un pedido con ID: " + idPedido + ".");
         }
         if (pedido.isEliminado()) {
             throw new IdEliminadoException("El pedido está eliminado. No se pueden agregar productos.");
@@ -119,7 +111,7 @@ public class PedidoService {
     public void quitarProductoDePedido(Long idPedido, Producto producto) {
         Pedido pedido = buscarPorId(idPedido);
         if (pedido == null) {
-            throw new IdNoEncontradoException("No se encontró un pedido con ID: " + idPedido);
+            throw new IdNoEncontradoException("No se encontró un pedido con ID: " + idPedido + ".");
         }
         // El pedido hace la baja lógica del detalle
         pedido.deleteDetallePedidoByProducto(producto);
