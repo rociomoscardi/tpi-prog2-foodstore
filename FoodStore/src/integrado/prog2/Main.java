@@ -5,6 +5,7 @@ import integrado.prog2.entities.Pedido;
 import integrado.prog2.entities.Producto;
 import integrado.prog2.entities.Usuario;
 import integrado.prog2.enums.FormaPago;
+import integrado.prog2.enums.Rol;
 import integrado.prog2.exception.IdDuplicadoException;
 import integrado.prog2.exception.IdEliminadoException;
 import integrado.prog2.exception.IdNoEncontradoException;
@@ -17,50 +18,13 @@ import java.util.Scanner;
 
 public class Main {
 
-    /*
-     * public static void main(String[] args) {
-     * ProductoService pService = new ProductoService();
-     * CategoriaService cService = new CategoriaService();
-     * System.out.println("Sistema Food Store iniciado");
-     * Categoria c = new Categoria(1l, "postre", "postres frios");
-     * Categoria c1 = new Categoria(2l, "cocas", "cocas frios 3l");
-     * Producto p = new Producto(1l, "helado", 100.00, "palito bombom", 2,
-     * "helado.png", true, c);
-     * Producto p1 = new Producto(2l, "heladoss", 100.00, "palito bombom", 2,
-     * "helado.png", true, c);
-     * 
-     * cService.agregarCategoria(c);
-     * cService.agregarCategoria(c1);
-     * pService.agregarProducto(p);
-     * pService.agregarProducto(p1);
-     * 
-     * // pService.eliminarProducto(1l);
-     * cService.eliminarCategoria(2l);
-     * 
-     * // cService.editarCategoria(1l, "helados", "palitos bombones");
-     * 
-     * pService.editarProducto(1l, 300, 10, c);
-     * pService.editarProducto(2l, 300, 10, c);
-     * 
-     * List<Producto> pLi = pService.listarProductos();
-     * for (Producto producto : pLi) {
-     * System.out.println(producto + " " + producto.getCategoria());
-     * }
-     * List<Categoria> cLi = cService.listarCategorias();
-     * for (Categoria categoria : cLi) {
-     * System.out.println(categoria);
-     * }
-     * 
-     * }
-     */
-
     public static void main(String[] args) {
         // Inicializamos los services
         CategoriaService cService = new CategoriaService();
         ProductoService pService = new ProductoService();
         UsuarioService uService = new UsuarioService();
         PedidoService pedService = new PedidoService();
-        
+
         // Inicializamos el Scanner para leer entradas del usuario
         Scanner scanner = new Scanner(System.in);
 
@@ -87,7 +51,7 @@ public class Main {
                     menuUsuarios(scanner, uService);
                     break;
                 case 4:
-                     menuPedidos(scanner, pedService, uService, pService);
+                    menuPedidos(scanner, pedService, uService, pService);
                     break;
                 case 0:
                     System.out.println("Saliendo...");
@@ -258,7 +222,8 @@ public class Main {
 
         } while (opcion != 0); // El menú se repite hasta que el usuario elija 0
     }
-private static void menuUsuarios(Scanner scanner, UsuarioService uService) {
+
+    private static void menuUsuarios(Scanner scanner, UsuarioService uService) {
         int opcion;
 
         do {
@@ -303,7 +268,21 @@ private static void menuUsuarios(Scanner scanner, UsuarioService uService) {
                         System.out.print("Ingrese el mail: ");
                         String mail = scanner.nextLine();
 
-                        Usuario nuevoUsuario = new Usuario(id, nombre, mail);
+                        System.out.print("Ingrese el apellido: ");
+                        String apellido = scanner.nextLine();
+
+                        System.out.print("Ingrese el celular: ");
+                        String celular = scanner.nextLine();
+
+                        System.out.print("Ingrese la contraseña: ");
+                        String contrasena = scanner.nextLine();
+
+                        System.out.println("Rol: 1. USUARIO | 2. ADMIN");
+                        int rolOpcion = scanner.nextInt();
+                        scanner.nextLine();
+                        Rol rol = rolOpcion == 2 ? Rol.ADMIN : Rol.USUARIO;
+
+                        Usuario nuevoUsuario = new Usuario(id, nombre, apellido, mail, celular, contrasena, rol);
 
                         uService.agregarUsuario(nuevoUsuario);
                         System.out.println("Usuario agregado correctamente con ID: " + id);
@@ -391,9 +370,11 @@ private static void menuUsuarios(Scanner scanner, UsuarioService uService) {
             }
 
         } while (opcion != 0);
-    } 
-// --- MENÚ DE PEDIDOS ---
-    private static void menuPedidos(Scanner scanner, PedidoService pedService, UsuarioService uService, ProductoService pService) {
+    }
+
+    // --- MENÚ DE PEDIDOS ---
+    private static void menuPedidos(Scanner scanner, PedidoService pedService, UsuarioService uService,
+            ProductoService pService) {
         int opcion;
 
         do {
@@ -422,7 +403,7 @@ private static void menuUsuarios(Scanner scanner, UsuarioService uService) {
                     try {
                         System.out.print("Ingrese el ID para el nuevo pedido: ");
                         Long idPedido = scanner.nextLong();
-                        
+
                         System.out.print("Ingrese el ID del usuario que realiza el pedido: ");
                         Long idUsuario = scanner.nextLong();
 
@@ -438,8 +419,10 @@ private static void menuUsuarios(Scanner scanner, UsuarioService uService) {
                         System.out.print("Seleccione (1-3): ");
                         int fpOpcion = scanner.nextInt();
                         FormaPago fp = FormaPago.EFECTIVO; // Por defecto
-                        if (fpOpcion == 2) fp = FormaPago.TARJETA;
-                        if (fpOpcion == 3) fp = FormaPago.TRANSFERENCIA;
+                        if (fpOpcion == 2)
+                            fp = FormaPago.TARJETA;
+                        if (fpOpcion == 3)
+                            fp = FormaPago.TRANSFERENCIA;
 
                         // Creamos y guardamos el pedido
                         Pedido nuevoPedido = new Pedido(idPedido, user, fp);
@@ -456,10 +439,10 @@ private static void menuUsuarios(Scanner scanner, UsuarioService uService) {
                     try {
                         System.out.print("Ingrese el ID del pedido: ");
                         Long idPed = scanner.nextLong();
-                        
+
                         System.out.print("Ingrese el ID del producto a agregar: ");
                         Long idProd = scanner.nextLong();
-                        
+
                         System.out.print("Ingrese la cantidad: ");
                         int cant = scanner.nextInt();
 
