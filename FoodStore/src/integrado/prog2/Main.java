@@ -512,10 +512,19 @@ public class Main {
                             System.out.print("Ingrese el nuevo nombre: ");
                             String nombre = scanner.nextLine();
 
+                            System.out.print("Ingrese el nuevo apellido: ");
+                            String apellido = scanner.nextLine();
+
                             System.out.print("Ingrese el nuevo mail: ");
                             String mail = scanner.nextLine();
 
-                            uService.editarUsuario(id, nombre, mail);
+                            System.out.print("Ingrese el nuevo celular: ");
+                            String celular = scanner.nextLine();
+
+                            System.out.print("Ingrese la nueva contraseña: ");
+                            String contrasena = scanner.nextLine();
+
+                            uService.editarUsuario(id, nombre, apellido, mail, celular, contrasena);
                             System.out.println("Usuario con ID: " + id + " editado correctamente.");
 
                         } catch (IdNoEncontradoException e) {

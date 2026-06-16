@@ -40,7 +40,7 @@ public class UsuarioService {
         this.listaUsuarios.add(nuevoUsuario);
     }
 
-// 4. Leer: Método para obtener la lista de usuarios activos
+    // 4. Leer: Método para obtener la lista de usuarios activos
     // Filtra el almacén y devuelve solo los usuarios que NO tienen baja lógica
     public List<Usuario> listarUsuarios() {
         List<Usuario> usuariosActivos = new ArrayList<>();
@@ -65,7 +65,8 @@ public class UsuarioService {
 
     // 6. Actualizar: Método para editar los datos de un usuario existente
     // Usa buscarPorId para encontrarlo y, si existe, cambia sus datos
-    public void editarUsuario(Long id, String nuevoNombre, String nuevoMail) {
+    public void editarUsuario(Long id, String nuevoNombre, String nuevoApellido, String nuevoMail, String nuevoCelular,
+            String nuevaContrasena) {
         Usuario usuarioAEditar = buscarPorId(id);
         if (usuarioAEditar == null) {
             throw new IdNoEncontradoException("No se encontró un usuario con ID: " + id);
@@ -74,11 +75,15 @@ public class UsuarioService {
             throw new IdEliminadoException("El usuario con ID: " + id + " fue eliminado y no se puede editar.");
         }
         usuarioAEditar.setNombre(nuevoNombre);
+        usuarioAEditar.setApellido(nuevoApellido);
         usuarioAEditar.setMail(nuevoMail);
+        usuarioAEditar.setCelular(nuevoCelular);
+        usuarioAEditar.setContrasena(nuevaContrasena);
     }
 
-// 7. Eliminar: Método para dar de baja un usuario (Soft Delete)
-    // Busca al usuario por su ID y, si lo encuentra, le cambia el estado a eliminado sin borrarlo físicamente
+    // 7. Eliminar: Método para dar de baja un usuario (Soft Delete)
+    // Busca al usuario por su ID y, si lo encuentra, le cambia el estado a
+    // eliminado sin borrarlo físicamente
     public void eliminarUsuario(Long id) {
         Usuario usuarioAEliminar = buscarPorId(id);
         if (usuarioAEliminar == null) {
