@@ -1,11 +1,15 @@
 package integrado.prog2;
 
 import integrado.prog2.entities.Categoria;
+import integrado.prog2.entities.Pedido;
 import integrado.prog2.entities.Producto;
+import integrado.prog2.entities.Usuario;
+import integrado.prog2.enums.FormaPago;
 import integrado.prog2.exception.IdDuplicadoException;
 import integrado.prog2.exception.IdEliminadoException;
 import integrado.prog2.exception.IdNoEncontradoException;
 import integrado.prog2.service.CategoriaService;
+import integrado.prog2.service.PedidoService;
 import integrado.prog2.service.ProductoService;
 import integrado.prog2.service.UsuarioService;
 import java.util.List;
@@ -55,6 +59,7 @@ public class Main {
         CategoriaService cService = new CategoriaService();
         ProductoService pService = new ProductoService();
         UsuarioService uService = new UsuarioService();
+        PedidoService pedService = new PedidoService();
         
         // Inicializamos el Scanner para leer entradas del usuario
         Scanner scanner = new Scanner(System.in);
@@ -79,10 +84,10 @@ public class Main {
                     // menuProductos(scanner, pService, cService);
                     break;
                 case 3:
-                    // menuUsuarios(scanner, uService);
+                    menuUsuarios(scanner, uService);
                     break;
                 case 4:
-                    // menuPedidos(scanner, pedService, uService, pService);
+                     menuPedidos(scanner, pedService, uService, pService);
                     break;
                 case 0:
                     System.out.println("Saliendo...");
@@ -252,5 +257,247 @@ public class Main {
             }
 
         } while (opcion != 0); // El menú se repite hasta que el usuario elija 0
+    }
+private static void menuUsuarios(Scanner scanner, UsuarioService uService) {
+        int opcion;
+
+        do {
+            System.out.println("\n=== USUARIOS ===");
+            System.out.println("1. Listar usuarios");
+            System.out.println("2. Agregar usuario");
+            System.out.println("3. Editar usuario");
+            System.out.println("4. Eliminar usuario");
+            System.out.println("0. Volver");
+            System.out.print("Seleccione: ");
+            opcion = scanner.nextInt();
+
+            switch (opcion) {
+
+                case 1:
+                    List<Usuario> usuarios = uService.listarUsuarios();
+                    if (usuarios.isEmpty()) {
+                        System.out.println("No hay usuarios cargados activos.");
+                    } else {
+                        for (Usuario usuario : usuarios) {
+                            System.out.println(usuario);
+                        }
+                    }
+                    break;
+
+                case 2:
+                    try {
+                        scanner.nextLine(); // Limpiamos el buffer
+
+                        System.out.print("Ingrese el ID: ");
+                        Long id = scanner.nextLong();
+                        scanner.nextLine();
+
+                        if (uService.buscarPorId(id) != null) {
+                            System.out.println("Error: ya existe un usuario con ID: " + id);
+                            break;
+                        }
+
+                        System.out.print("Ingrese el nombre: ");
+                        String nombre = scanner.nextLine();
+
+                        System.out.print("Ingrese el mail: ");
+                        String mail = scanner.nextLine();
+
+                        Usuario nuevoUsuario = new Usuario(id, nombre, mail);
+
+                        uService.agregarUsuario(nuevoUsuario);
+                        System.out.println("Usuario agregado correctamente con ID: " + id);
+
+                    } catch (IdDuplicadoException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                    break;
+
+                case 3:
+                    List<Usuario> usuariosEditar = uService.listarUsuarios();
+                    if (usuariosEditar.isEmpty()) {
+                        System.out.println("No hay usuarios cargados para editar.");
+                    } else {
+                        for (Usuario usuario : usuariosEditar) {
+                            System.out.println(usuario);
+                        }
+                        try {
+                            scanner.nextLine();
+
+                            System.out.print("Ingrese el ID del usuario a editar: ");
+                            Long id = scanner.nextLong();
+                            scanner.nextLine();
+
+                            System.out.print("Ingrese el nuevo nombre: ");
+                            String nombre = scanner.nextLine();
+
+                            System.out.print("Ingrese el nuevo mail: ");
+                            String mail = scanner.nextLine();
+
+                            uService.editarUsuario(id, nombre, mail);
+                            System.out.println("Usuario con ID: " + id + " editado correctamente.");
+
+                        } catch (IdNoEncontradoException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        } catch (IdEliminadoException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        }
+                    }
+                    break;
+
+                case 4:
+                    List<Usuario> usuariosEliminar = uService.listarUsuarios();
+                    if (usuariosEliminar.isEmpty()) {
+                        System.out.println("No hay usuarios cargados para eliminar.");
+                    } else {
+                        for (Usuario usuario : usuariosEliminar) {
+                            System.out.println(usuario);
+                        }
+                        try {
+                            scanner.nextLine();
+                            System.out.print("Ingrese el ID del usuario a eliminar: ");
+                            Long id = scanner.nextLong();
+                            scanner.nextLine();
+
+                            System.out.print("¿Está seguro que desea dar de baja al usuario? (S/N): ");
+                            String confirmacion = scanner.nextLine();
+
+                            if (confirmacion.equalsIgnoreCase("S")) {
+                                uService.eliminarUsuario(id);
+                                System.out.println("Usuario con ID: " + id + " eliminado correctamente.");
+                            } else {
+                                System.out.println("Operación cancelada.");
+                            }
+                        } catch (IdNoEncontradoException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        } catch (IdEliminadoException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        }
+                    }
+                    break;
+
+                case 0:
+                    System.out.println("Volviendo al menú principal...");
+                    break;
+
+                default:
+                    System.out.println("Opción inválida. Intente nuevamente.");
+            }
+
+        } while (opcion != 0);
+    } 
+// --- MENÚ DE PEDIDOS ---
+    private static void menuPedidos(Scanner scanner, PedidoService pedService, UsuarioService uService, ProductoService pService) {
+        int opcion;
+
+        do {
+            System.out.println("\n=== PEDIDOS ===");
+            System.out.println("1. Listar pedidos");
+            System.out.println("2. Crear nuevo pedido (vacío)");
+            System.out.println("3. Agregar producto a un pedido");
+            System.out.println("4. Eliminar pedido");
+            System.out.println("0. Volver");
+            System.out.print("Seleccione: ");
+            opcion = scanner.nextInt();
+
+            switch (opcion) {
+                case 1:
+                    List<Pedido> pedidos = pedService.listarPedidos();
+                    if (pedidos.isEmpty()) {
+                        System.out.println("No hay pedidos activos.");
+                    } else {
+                        for (Pedido p : pedidos) {
+                            System.out.println(p);
+                        }
+                    }
+                    break;
+
+                case 2:
+                    try {
+                        System.out.print("Ingrese el ID para el nuevo pedido: ");
+                        Long idPedido = scanner.nextLong();
+                        
+                        System.out.print("Ingrese el ID del usuario que realiza el pedido: ");
+                        Long idUsuario = scanner.nextLong();
+
+                        // Buscamos si el usuario existe antes de hacer el pedido
+                        Usuario user = uService.buscarPorId(idUsuario);
+                        if (user == null) {
+                            System.out.println("Error: No se encontró un usuario con ese ID.");
+                            break;
+                        }
+
+                        // Menú rápido para la forma de pago
+                        System.out.println("Formas de Pago: 1. EFECTIVO | 2. TARJETA | 3. TRANSFERENCIA");
+                        System.out.print("Seleccione (1-3): ");
+                        int fpOpcion = scanner.nextInt();
+                        FormaPago fp = FormaPago.EFECTIVO; // Por defecto
+                        if (fpOpcion == 2) fp = FormaPago.TARJETA;
+                        if (fpOpcion == 3) fp = FormaPago.TRANSFERENCIA;
+
+                        // Creamos y guardamos el pedido
+                        Pedido nuevoPedido = new Pedido(idPedido, user, fp);
+                        pedService.crearPedido(nuevoPedido);
+                        System.out.println("Pedido creado con éxito con estado PENDIENTE.");
+
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
+                        scanner.nextLine(); // Limpiamos buffer
+                    }
+                    break;
+
+                case 3:
+                    try {
+                        System.out.print("Ingrese el ID del pedido: ");
+                        Long idPed = scanner.nextLong();
+                        
+                        System.out.print("Ingrese el ID del producto a agregar: ");
+                        Long idProd = scanner.nextLong();
+                        
+                        System.out.print("Ingrese la cantidad: ");
+                        int cant = scanner.nextInt();
+
+                        // Buscamos si el producto existe
+                        Producto prod = pService.buscarPorId(idProd);
+                        if (prod == null) {
+                            System.out.println("Error: Producto no encontrado.");
+                            break;
+                        }
+
+                        pedService.agregarProductoAPedido(idPed, prod, cant);
+                        System.out.println("Producto agregado exitosamente al pedido.");
+
+                    } catch (Exception e) {
+                        System.out.println("Error al agregar: " + e.getMessage());
+                        scanner.nextLine();
+                    }
+                    break;
+
+                case 4:
+                    try {
+                        System.out.print("Ingrese el ID del pedido a dar de baja: ");
+                        Long id = scanner.nextLong();
+                        pedService.eliminarPedido(id);
+                        System.out.println("Pedido eliminado correctamente.");
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
+                        scanner.nextLine();
+                    }
+                    break;
+
+                case 0:
+                    System.out.println("Volviendo al menú principal...");
+                    break;
+
+                default:
+                    System.out.println("Opción inválida.");
+            }
+        } while (opcion != 0);
     }
 }

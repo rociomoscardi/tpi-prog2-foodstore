@@ -40,8 +40,8 @@ public class UsuarioService {
         this.listaUsuarios.add(nuevoUsuario);
     }
 
-    // 4. Leer: Método para obtener la lista completa de usuarios
-    // Devuelve nuestro 'almacén' para que el menú lo pueda mostrar
+// 4. Leer: Método para obtener la lista de usuarios activos
+    // Filtra el almacén y devuelve solo los usuarios que NO tienen baja lógica
     public List<Usuario> listarUsuarios() {
         List<Usuario> usuariosActivos = new ArrayList<>();
         for (Usuario u : listaUsuarios) {
@@ -77,8 +77,8 @@ public class UsuarioService {
         usuarioAEditar.setMail(nuevoMail);
     }
 
-    // 7. Eliminar: Método para borrar un usuario de la lista
-    // Busca al usuario por su ID y, si lo encuentra, lo quita del almacén
+// 7. Eliminar: Método para dar de baja un usuario (Soft Delete)
+    // Busca al usuario por su ID y, si lo encuentra, le cambia el estado a eliminado sin borrarlo físicamente
     public void eliminarUsuario(Long id) {
         Usuario usuarioAEliminar = buscarPorId(id);
         if (usuarioAEliminar == null) {
