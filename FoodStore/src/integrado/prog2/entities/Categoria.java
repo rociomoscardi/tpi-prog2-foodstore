@@ -5,10 +5,12 @@ import java.util.List;
 
 public class Categoria extends Base {
 
+    // Atributos privados
     private String nombre;
     private String descripcion;
     private List<Producto> productos;
 
+    // Constructores
     public Categoria() {
         super();
         this.productos = new ArrayList<>();
@@ -21,6 +23,7 @@ public class Categoria extends Base {
         this.productos = new ArrayList<>();
     }
 
+    // Getters y Setters
     public String getNombre() {
         return nombre;
     }
@@ -29,7 +32,7 @@ public class Categoria extends Base {
         if (nombre == null || nombre.trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre de la categoría no puede estar vacío.");
         }
-        // Aplicamos trim para eliminar espacios y toTitleCase para capitalizar
+        // Aplicar trim para eliminar espacios y toTitleCase para capitalizar
         this.nombre = toTitleCase(nombre.trim());
     }
 
@@ -41,7 +44,7 @@ public class Categoria extends Base {
         if (descripcion == null || descripcion.trim().isEmpty()) {
             throw new IllegalArgumentException("La descripción de la categoría no puede estar vacía.");
         }
-        // Aplicamos trim para eliminar espacios y toTitleCase para capitalizar
+        // Aplicar trim para eliminar espacios y toTitleCase para capitalizar
         this.descripcion = toTitleCase(descripcion.trim());
     }
 
@@ -58,18 +61,19 @@ public class Categoria extends Base {
 
     public void agregarProducto(Producto producto) {
         if (producto == null) {
-            throw new IllegalArgumentException("El producto no puede ser nulo.");
+            throw new IllegalArgumentException("El producto no puede estar vacío.");
         }
         this.productos.add(producto);
     }
 
-    // Convierte la primera letra a mayúscula y el resto a minúscula
+    // Convertir la primera letra a mayúscula y el resto a minúscula
     private String toTitleCase(String texto) {
         if (texto == null || texto.isEmpty())
             return texto;
         return Character.toUpperCase(texto.charAt(0)) + texto.substring(1).toLowerCase();
     }
 
+    // Método toString para mostrar la información de la categoría
     @Override
     public String toString() {
         return "ID: " + getId() +
