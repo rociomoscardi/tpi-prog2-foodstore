@@ -30,7 +30,7 @@ public class CategoriaService {
                 return;
             }
         }
-        throw new IdNoEncontradoException("No se encontró una categoría con ID: " + categoriaId);
+        throw new IdNoEncontradoException("No se encontró una categoría con ID: " + categoriaId + ".");
     }
 
     public void agregarCategoria(Categoria categoria) {
@@ -39,7 +39,7 @@ public class CategoriaService {
         }
         for (Categoria categoriaAgregar : categorias) {
             if (categoriaAgregar.getId().equals(categoria.getId())) {
-                throw new IdDuplicadoException("Ya existe una categoría con ID: " + categoria.getId() + ".");
+                throw new IdDuplicadoException("Ya existe una categoría con ID: " + categoria.getId() + "." + " No se pueden agregar categorías con IDs duplicados.");
             }
         }
         categorias.add(categoria);
@@ -49,7 +49,7 @@ public class CategoriaService {
         for (Categoria categoriaEditar : categorias) {
             if (categoriaEditar.getId().equals(categoriaId)) {
 
-                if (categoriaEditar.isEliminado() == true) {
+                if (categoriaEditar.isEliminado()) {
                     throw new IdEliminadoException(
                             "La categoría con ID: " + categoriaEditar.getId() + " fue eliminada. No se puede editar.");
                 }
