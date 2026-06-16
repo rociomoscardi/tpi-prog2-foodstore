@@ -19,18 +19,18 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        // Inicializamos los services
+        // Inicializar los services
         CategoriaService cService = new CategoriaService();
         ProductoService pService = new ProductoService();
         UsuarioService uService = new UsuarioService();
         PedidoService pedService = new PedidoService();
 
-        // Inicializamos el Scanner para leer entradas del usuario
+        // Inicializar el Scanner para leer entradas del usuario
         Scanner scanner = new Scanner(System.in);
 
         int opcion;
         do {
-            // Mostramos el menú principal
+            // Mostrar el menú principal
             System.out.println("\n=== SISTEMA DE PEDIDOS (FOOD STORE) ===");
             System.out.println("1. Categorías");
             System.out.println("2. Productos");
@@ -57,19 +57,20 @@ public class Main {
                     System.out.println("Saliendo...");
                     break;
                 default:
-                    System.out.println("Opción inválida. Intente nuevamente.");
+                    System.out.println("Opción inválida. Intentelo nuevamente.");
             }
         } while (opcion != 0);
 
-        // Cerramos el Scanner al salir
+        // Cerrar el Scanner al salir
         scanner.close();
     }
 
+    // --- MENÚ DE CATEGORÍAS ---
     private static void menuCategorias(Scanner scanner, CategoriaService cService) {
         int opcion;
 
         do {
-            // Mostramos las opciones disponibles del submenú de categorías
+            // Mostrar las opciones disponibles del submenú de Categorías
             System.out.println("\n=== CATEGORÍAS ===");
             System.out.println("1. Listar categorías");
             System.out.println("2. Agregar categoría");
@@ -82,12 +83,12 @@ public class Main {
             switch (opcion) {
 
                 case 1:
-                    // Obtenemos la lista de categorías no eliminadas a través del service
+                    // Obtener la lista de categorías no eliminadas a través del service
                     List<Categoria> categorias = cService.listarCategorias();
                     if (categorias.isEmpty()) {
                         System.out.println("No hay categorías cargadas.");
                     } else {
-                        // Recorremos e imprimimos cada categoría usando su toString()
+                        // Recorrer e imprimir cada categoría usando su toString()
                         for (Categoria categoria : categorias) {
                             System.out.println(categoria);
                         }
@@ -96,15 +97,15 @@ public class Main {
 
                 case 2:
                     try {
-                        // Limpiamos el buffer después de leer el número de opción
+                        // Limpiar el buffer después de leer el número de opción
                         scanner.nextLine();
 
-                        // Solicitamos los datos de la nueva categoría al usuario
+                        // Solicitar los datos de la nueva categoría al usuario
                         System.out.print("Ingrese el ID: ");
                         Long id = scanner.nextLong();
                         scanner.nextLine();
 
-                        // Verificamos si el ID ya existe antes de pedir más datos al usuario
+                        // Verificar si el ID ya existe antes de pedir más datos al usuario
                         if (cService.buscarPorId(id) != null) {
                             System.out.println("Error: ya existe una categoría con ID: " + id);
                             break;
@@ -116,11 +117,11 @@ public class Main {
                         System.out.print("Ingrese la descripción: ");
                         String descripcion = scanner.nextLine();
 
-                        // Creamos el objeto Categoria con los datos ingresados
+                        // Crear el objeto Categoria con los datos ingresados
                         // En este punto se ejecutan las validaciones del constructor
                         Categoria nuevaCategoria = new Categoria(id, nombre, descripcion);
 
-                        // Delegamos al service la lógica de agregar y validar duplicados
+                        // Delegar al service la lógica de agregar y validar duplicados
                         cService.agregarCategoria(nuevaCategoria);
                         System.out.println("Categoría agregada correctamente con ID: " + id);
 
@@ -134,7 +135,7 @@ public class Main {
                     break;
 
                 case 3:
-                    // Mostramos las categorías disponibles para que el usuario sepa qué ID ingresar
+                    // Mostrar las categorías disponibles para que el usuario sepa qué ID ingresar
                     List<Categoria> categoriasEditar = cService.listarCategorias();
                     if (categoriasEditar.isEmpty()) {
                         System.out.println("No hay categorías cargadas.");
@@ -145,7 +146,7 @@ public class Main {
                         try {
                             scanner.nextLine();
 
-                            // Solicitamos el ID de la categoría a editar y los nuevos datos
+                            // Solicitar el ID de la categoría a editar y los nuevos datos
                             System.out.print("Ingrese el ID de la categoría a editar: ");
                             Long id = scanner.nextLong();
                             scanner.nextLine();
@@ -174,7 +175,7 @@ public class Main {
                     break;
 
                 case 4:
-                    // Mostramos las categorías disponibles para que el usuario sepa qué ID ingresar
+                    // Mostrar las categorías disponibles para que el usuario sepa qué ID ingresar
                     List<Categoria> categoriasEliminar = cService.listarCategorias();
                     if (categoriasEliminar.isEmpty()) {
                         System.out.println("No hay categorías cargadas.");
@@ -188,7 +189,7 @@ public class Main {
                             Long id = scanner.nextLong();
                             scanner.nextLine();
 
-                            // Pedimos confirmación antes de realizar la baja lógica
+                            // Pedir confirmación antes de realizar la baja lógica
                             System.out.print("¿Está seguro? (S/N): ");
                             String confirmacion = scanner.nextLine();
 
@@ -223,6 +224,7 @@ public class Main {
         } while (opcion != 0); // El menú se repite hasta que el usuario elija 0
     }
 
+    // --- MENÚ DE USUARIOS ---
     private static void menuUsuarios(Scanner scanner, UsuarioService uService) {
         int opcion;
 
@@ -366,7 +368,7 @@ public class Main {
                     break;
 
                 default:
-                    System.out.println("Opción inválida. Intente nuevamente.");
+                    System.out.println("Opción inválida. Intentelo nuevamente.");
             }
 
         } while (opcion != 0);
@@ -479,7 +481,7 @@ public class Main {
                     break;
 
                 default:
-                    System.out.println("Opción inválida.");
+                    System.out.println("Opción inválida. Intentelo nuevamente.");
             }
         } while (opcion != 0);
     }
