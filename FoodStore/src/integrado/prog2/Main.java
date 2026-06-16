@@ -4,7 +4,9 @@ import integrado.prog2.entities.Categoria;
 import integrado.prog2.entities.Pedido;
 import integrado.prog2.entities.Producto;
 import integrado.prog2.entities.Usuario;
+import integrado.prog2.enums.Estado;
 import integrado.prog2.enums.FormaPago;
+import integrado.prog2.enums.Rol;
 import integrado.prog2.exception.IdDuplicadoException;
 import integrado.prog2.exception.IdEliminadoException;
 import integrado.prog2.exception.IdNoEncontradoException;
@@ -17,56 +19,19 @@ import java.util.Scanner;
 
 public class Main {
 
-    /*
-     * public static void main(String[] args) {
-     * ProductoService pService = new ProductoService();
-     * CategoriaService cService = new CategoriaService();
-     * System.out.println("Sistema Food Store iniciado");
-     * Categoria c = new Categoria(1l, "postre", "postres frios");
-     * Categoria c1 = new Categoria(2l, "cocas", "cocas frios 3l");
-     * Producto p = new Producto(1l, "helado", 100.00, "palito bombom", 2,
-     * "helado.png", true, c);
-     * Producto p1 = new Producto(2l, "heladoss", 100.00, "palito bombom", 2,
-     * "helado.png", true, c);
-     * 
-     * cService.agregarCategoria(c);
-     * cService.agregarCategoria(c1);
-     * pService.agregarProducto(p);
-     * pService.agregarProducto(p1);
-     * 
-     * // pService.eliminarProducto(1l);
-     * cService.eliminarCategoria(2l);
-     * 
-     * // cService.editarCategoria(1l, "helados", "palitos bombones");
-     * 
-     * pService.editarProducto(1l, 300, 10, c);
-     * pService.editarProducto(2l, 300, 10, c);
-     * 
-     * List<Producto> pLi = pService.listarProductos();
-     * for (Producto producto : pLi) {
-     * System.out.println(producto + " " + producto.getCategoria());
-     * }
-     * List<Categoria> cLi = cService.listarCategorias();
-     * for (Categoria categoria : cLi) {
-     * System.out.println(categoria);
-     * }
-     * 
-     * }
-     */
-
     public static void main(String[] args) {
-        // Inicializamos los services
+        // Inicializar los services
         CategoriaService cService = new CategoriaService();
         ProductoService pService = new ProductoService();
         UsuarioService uService = new UsuarioService();
         PedidoService pedService = new PedidoService();
-        
-        // Inicializamos el Scanner para leer entradas del usuario
+
+        // Inicializar el Scanner para leer entradas del usuario
         Scanner scanner = new Scanner(System.in);
 
         int opcion;
         do {
-            // Mostramos el menú principal
+            // Mostrar el menú principal
             System.out.println("\n=== SISTEMA DE PEDIDOS (FOOD STORE) ===");
             System.out.println("1. Categorías");
             System.out.println("2. Productos");
@@ -81,31 +46,32 @@ public class Main {
                     menuCategorias(scanner, cService);
                     break;
                 case 2:
-                    // menuProductos(scanner, pService, cService);
+                    menuProductos(scanner, pService, cService);
                     break;
                 case 3:
                     menuUsuarios(scanner, uService);
                     break;
                 case 4:
-                     menuPedidos(scanner, pedService, uService, pService);
+                    menuPedidos(scanner, pedService, uService, pService);
                     break;
                 case 0:
                     System.out.println("Saliendo...");
                     break;
                 default:
-                    System.out.println("Opción inválida. Intente nuevamente.");
+                    System.out.println("Opción inválida. Intentelo nuevamente.");
             }
         } while (opcion != 0);
 
-        // Cerramos el Scanner al salir
+        // Cerrar el Scanner al salir
         scanner.close();
     }
 
+    // --- MENÚ DE CATEGORÍAS ---
     private static void menuCategorias(Scanner scanner, CategoriaService cService) {
         int opcion;
 
         do {
-            // Mostramos las opciones disponibles del submenú de categorías
+            // Mostrar las opciones disponibles del submenú de Categorías
             System.out.println("\n=== CATEGORÍAS ===");
             System.out.println("1. Listar categorías");
             System.out.println("2. Agregar categoría");
@@ -118,12 +84,12 @@ public class Main {
             switch (opcion) {
 
                 case 1:
-                    // Obtenemos la lista de categorías no eliminadas a través del service
+                    // Obtener la lista de categorías no eliminadas a través del service
                     List<Categoria> categorias = cService.listarCategorias();
                     if (categorias.isEmpty()) {
                         System.out.println("No hay categorías cargadas.");
                     } else {
-                        // Recorremos e imprimimos cada categoría usando su toString()
+                        // Recorrer e imprimir cada categoría usando su toString()
                         for (Categoria categoria : categorias) {
                             System.out.println(categoria);
                         }
@@ -132,15 +98,15 @@ public class Main {
 
                 case 2:
                     try {
-                        // Limpiamos el buffer después de leer el número de opción
+                        // Limpiar el buffer después de leer el número de opción
                         scanner.nextLine();
 
-                        // Solicitamos los datos de la nueva categoría al usuario
+                        // Solicitar los datos de la nueva categoría al usuario
                         System.out.print("Ingrese el ID: ");
                         Long id = scanner.nextLong();
                         scanner.nextLine();
 
-                        // Verificamos si el ID ya existe antes de pedir más datos al usuario
+                        // Verificar si el ID ya existe antes de pedir más datos al usuario
                         if (cService.buscarPorId(id) != null) {
                             System.out.println("Error: ya existe una categoría con ID: " + id);
                             break;
@@ -152,11 +118,11 @@ public class Main {
                         System.out.print("Ingrese la descripción: ");
                         String descripcion = scanner.nextLine();
 
-                        // Creamos el objeto Categoria con los datos ingresados
+                        // Crear el objeto Categoria con los datos ingresados
                         // En este punto se ejecutan las validaciones del constructor
                         Categoria nuevaCategoria = new Categoria(id, nombre, descripcion);
 
-                        // Delegamos al service la lógica de agregar y validar duplicados
+                        // Delegar al service la lógica de agregar y validar duplicados
                         cService.agregarCategoria(nuevaCategoria);
                         System.out.println("Categoría agregada correctamente con ID: " + id);
 
@@ -170,7 +136,7 @@ public class Main {
                     break;
 
                 case 3:
-                    // Mostramos las categorías disponibles para que el usuario sepa qué ID ingresar
+                    // Mostrar las categorías disponibles para que el usuario sepa qué ID ingresar
                     List<Categoria> categoriasEditar = cService.listarCategorias();
                     if (categoriasEditar.isEmpty()) {
                         System.out.println("No hay categorías cargadas.");
@@ -181,7 +147,7 @@ public class Main {
                         try {
                             scanner.nextLine();
 
-                            // Solicitamos el ID de la categoría a editar y los nuevos datos
+                            // Solicitar el ID de la categoría a editar y los nuevos datos
                             System.out.print("Ingrese el ID de la categoría a editar: ");
                             Long id = scanner.nextLong();
                             scanner.nextLine();
@@ -210,7 +176,7 @@ public class Main {
                     break;
 
                 case 4:
-                    // Mostramos las categorías disponibles para que el usuario sepa qué ID ingresar
+                    // Mostrar las categorías disponibles para que el usuario sepa qué ID ingresar
                     List<Categoria> categoriasEliminar = cService.listarCategorias();
                     if (categoriasEliminar.isEmpty()) {
                         System.out.println("No hay categorías cargadas.");
@@ -224,7 +190,7 @@ public class Main {
                             Long id = scanner.nextLong();
                             scanner.nextLine();
 
-                            // Pedimos confirmación antes de realizar la baja lógica
+                            // Pedir confirmación antes de realizar la baja lógica
                             System.out.print("¿Está seguro? (S/N): ");
                             String confirmacion = scanner.nextLine();
 
@@ -258,7 +224,207 @@ public class Main {
 
         } while (opcion != 0); // El menú se repite hasta que el usuario elija 0
     }
-private static void menuUsuarios(Scanner scanner, UsuarioService uService) {
+
+    // --- MENÚ DE PRODUCTOS ---
+    private static void menuProductos(Scanner scanner, ProductoService pService, CategoriaService cService) {
+        int opcion;
+
+        do {
+            System.out.println("\n=== PRODUCTOS ===");
+            System.out.println("1. Listar productos");
+            System.out.println("2. Agregar producto");
+            System.out.println("3. Editar producto");
+            System.out.println("4. Eliminar producto");
+            System.out.println("0. Volver");
+            System.out.print("Seleccione: ");
+            opcion = scanner.nextInt();
+
+            switch (opcion) {
+
+                case 1:
+                    // Obtener la lista de productos no eliminados y disponibles
+                    List<Producto> productos = pService.listarProductos();
+                    if (productos.isEmpty()) {
+                        System.out.println("No hay productos disponibles.");
+                    } else {
+                        for (Producto producto : productos) {
+                            System.out.println(producto);
+                        }
+                    }
+                    break;
+
+                case 2:
+                    try {
+                        scanner.nextLine();
+
+                        System.out.print("Ingrese el ID del producto: ");
+                        Long id = scanner.nextLong();
+                        scanner.nextLine();
+
+                        // Verificar si el ID ya existe antes de pedir más datos
+                        if (pService.buscarPorId(id) != null) {
+                            System.out.println("Error: ya existe un producto con ID: " + id);
+                            break;
+                        }
+
+                        System.out.print("Ingrese el nombre: ");
+                        String nombre = scanner.nextLine();
+
+                        System.out.print("Ingrese la descripción: ");
+                        String descripcion = scanner.nextLine();
+
+                        System.out.print("Ingrese el precio: ");
+                        Double precio = scanner.nextDouble();
+                        scanner.nextLine();
+
+                        System.out.print("Ingrese el stock: ");
+                        int stock = scanner.nextInt();
+                        scanner.nextLine();
+
+                        System.out.print("Ingrese la imagen (o Enter para omitir): ");
+                        String imagen = scanner.nextLine();
+
+                        System.out.print("¿Está disponible? (S/N): ");
+                        String dispStr = scanner.nextLine();
+                        boolean disponible = dispStr.equalsIgnoreCase("S");
+
+                        // Mostrar las categorías disponibles para asociar
+                        List<Categoria> categorias = cService.listarCategorias();
+                        if (categorias.isEmpty()) {
+                            System.out.println("Error: No hay categorías disponibles. Cree una categoría primero.");
+                            break;
+                        }
+                        System.out.println("Categorías disponibles:");
+                        for (Categoria cat : categorias) {
+                            System.out.println(cat);
+                        }
+                        System.out.print("Ingrese el ID de la categoría: ");
+                        Long idCategoria = scanner.nextLong();
+                        scanner.nextLine();
+
+                        // Buscar la categoría seleccionada
+                        Categoria categoria = cService.buscarPorId(idCategoria);
+                        if (categoria == null) {
+                            System.out.println("Error: No se encontró una categoría con ese ID.");
+                            break;
+                        }
+
+                        // Crear el producto con todos los datos
+                        Producto nuevoProducto = new Producto(id, nombre, precio, descripcion, stock, imagen,
+                                disponible, categoria);
+                        pService.agregarProducto(nuevoProducto);
+                        System.out.println("Producto agregado correctamente con ID: " + id);
+
+                    } catch (IdDuplicadoException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                    break;
+
+                case 3:
+                    // Mostrar productos disponibles para que el usuario sepa qué ID ingresar
+                    List<Producto> productosEditar = pService.listarProductos();
+                    if (productosEditar.isEmpty()) {
+                        System.out.println("No hay productos disponibles para editar.");
+                    } else {
+                        for (Producto producto : productosEditar) {
+                            System.out.println(producto);
+                        }
+                        try {
+                            scanner.nextLine();
+
+                            System.out.print("Ingrese el ID del producto a editar: ");
+                            Long id = scanner.nextLong();
+                            scanner.nextLine();
+
+                            System.out.print("Ingrese el nuevo precio: ");
+                            double precio = scanner.nextDouble();
+                            scanner.nextLine();
+
+                            System.out.print("Ingrese el nuevo stock: ");
+                            int stock = scanner.nextInt();
+                            scanner.nextLine();
+
+                            // Mostrar categorías disponibles
+                            List<Categoria> categoriasEditar = cService.listarCategorias();
+                            System.out.println("Categorías disponibles:");
+                            for (Categoria cat : categoriasEditar) {
+                                System.out.println(cat);
+                            }
+                            System.out.print("Ingrese el ID de la nueva categoría: ");
+                            Long idCategoria = scanner.nextLong();
+                            scanner.nextLine();
+
+                            Categoria categoria = cService.buscarPorId(idCategoria);
+                            if (categoria == null) {
+                                System.out.println("Error: No se encontró una categoría con el ID ingresado.");
+                                break;
+                            }
+
+                            pService.editarProducto(id, precio, stock, categoria);
+                            System.out.println("Producto con ID: " + id + " editado correctamente.");
+
+                        } catch (IdNoEncontradoException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        } catch (IdEliminadoException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        }
+                    }
+                    break;
+
+                case 4:
+                    // Mostrar productos disponibles para que el usuario sepa qué ID ingresar
+                    List<Producto> productosEliminar = pService.listarProductos();
+                    if (productosEliminar.isEmpty()) {
+                        System.out.println("No hay productos disponibles para eliminar.");
+                    } else {
+                        for (Producto producto : productosEliminar) {
+                            System.out.println(producto);
+                        }
+                        try {
+                            scanner.nextLine();
+
+                            System.out.print("Ingrese el ID del producto a eliminar: ");
+                            Long id = scanner.nextLong();
+                            scanner.nextLine();
+
+                            // Pedir confirmación antes de realizar la baja lógica
+                            System.out.print("¿Está seguro? (S/N): ");
+                            String confirmacion = scanner.nextLine();
+
+                            if (confirmacion.equalsIgnoreCase("S")) {
+                                pService.eliminarProducto(id);
+                                System.out.println("Producto con ID: " + id + " eliminado correctamente.");
+                            } else {
+                                System.out.println("Operación cancelada.");
+                            }
+
+                        } catch (IdNoEncontradoException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        } catch (IdEliminadoException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        }
+                    }
+                    break;
+
+                case 0:
+                    System.out.println("Volviendo al menú principal...");
+                    break;
+
+                default:
+                    System.out.println("Opción inválida. Intentelo nuevamente.");
+            }
+
+        } while (opcion != 0);
+    }
+
+    // --- MENÚ DE USUARIOS ---
+    private static void menuUsuarios(Scanner scanner, UsuarioService uService) {
         int opcion;
 
         do {
@@ -303,7 +469,21 @@ private static void menuUsuarios(Scanner scanner, UsuarioService uService) {
                         System.out.print("Ingrese el mail: ");
                         String mail = scanner.nextLine();
 
-                        Usuario nuevoUsuario = new Usuario(id, nombre, mail);
+                        System.out.print("Ingrese el apellido: ");
+                        String apellido = scanner.nextLine();
+
+                        System.out.print("Ingrese el celular: ");
+                        String celular = scanner.nextLine();
+
+                        System.out.print("Ingrese la contraseña: ");
+                        String contrasena = scanner.nextLine();
+
+                        System.out.println("Rol: 1. USUARIO | 2. ADMIN");
+                        int rolOpcion = scanner.nextInt();
+                        scanner.nextLine();
+                        Rol rol = rolOpcion == 2 ? Rol.ADMIN : Rol.USUARIO;
+
+                        Usuario nuevoUsuario = new Usuario(id, nombre, apellido, mail, celular, contrasena, rol);
 
                         uService.agregarUsuario(nuevoUsuario);
                         System.out.println("Usuario agregado correctamente con ID: " + id);
@@ -333,10 +513,19 @@ private static void menuUsuarios(Scanner scanner, UsuarioService uService) {
                             System.out.print("Ingrese el nuevo nombre: ");
                             String nombre = scanner.nextLine();
 
+                            System.out.print("Ingrese el nuevo apellido: ");
+                            String apellido = scanner.nextLine();
+
                             System.out.print("Ingrese el nuevo mail: ");
                             String mail = scanner.nextLine();
 
-                            uService.editarUsuario(id, nombre, mail);
+                            System.out.print("Ingrese el nuevo celular: ");
+                            String celular = scanner.nextLine();
+
+                            System.out.print("Ingrese la nueva contraseña: ");
+                            String contrasena = scanner.nextLine();
+
+                            uService.editarUsuario(id, nombre, apellido, mail, celular, contrasena);
                             System.out.println("Usuario con ID: " + id + " editado correctamente.");
 
                         } catch (IdNoEncontradoException e) {
@@ -387,21 +576,24 @@ private static void menuUsuarios(Scanner scanner, UsuarioService uService) {
                     break;
 
                 default:
-                    System.out.println("Opción inválida. Intente nuevamente.");
+                    System.out.println("Opción inválida. Intentelo nuevamente.");
             }
 
         } while (opcion != 0);
-    } 
-// --- MENÚ DE PEDIDOS ---
-    private static void menuPedidos(Scanner scanner, PedidoService pedService, UsuarioService uService, ProductoService pService) {
+    }
+
+    // --- MENÚ DE PEDIDOS ---
+    private static void menuPedidos(Scanner scanner, PedidoService pedService, UsuarioService uService,
+            ProductoService pService) {
         int opcion;
 
         do {
             System.out.println("\n=== PEDIDOS ===");
             System.out.println("1. Listar pedidos");
-            System.out.println("2. Crear nuevo pedido (vacío)");
+            System.out.println("2. Crear nuevo pedido");
             System.out.println("3. Agregar producto a un pedido");
             System.out.println("4. Eliminar pedido");
+            System.out.println("5. Actualizar estado o forma de pago");
             System.out.println("0. Volver");
             System.out.print("Seleccione: ");
             opcion = scanner.nextInt();
@@ -422,7 +614,7 @@ private static void menuUsuarios(Scanner scanner, UsuarioService uService) {
                     try {
                         System.out.print("Ingrese el ID para el nuevo pedido: ");
                         Long idPedido = scanner.nextLong();
-                        
+
                         System.out.print("Ingrese el ID del usuario que realiza el pedido: ");
                         Long idUsuario = scanner.nextLong();
 
@@ -438,8 +630,10 @@ private static void menuUsuarios(Scanner scanner, UsuarioService uService) {
                         System.out.print("Seleccione (1-3): ");
                         int fpOpcion = scanner.nextInt();
                         FormaPago fp = FormaPago.EFECTIVO; // Por defecto
-                        if (fpOpcion == 2) fp = FormaPago.TARJETA;
-                        if (fpOpcion == 3) fp = FormaPago.TRANSFERENCIA;
+                        if (fpOpcion == 2)
+                            fp = FormaPago.TARJETA;
+                        if (fpOpcion == 3)
+                            fp = FormaPago.TRANSFERENCIA;
 
                         // Creamos y guardamos el pedido
                         Pedido nuevoPedido = new Pedido(idPedido, user, fp);
@@ -456,10 +650,10 @@ private static void menuUsuarios(Scanner scanner, UsuarioService uService) {
                     try {
                         System.out.print("Ingrese el ID del pedido: ");
                         Long idPed = scanner.nextLong();
-                        
+
                         System.out.print("Ingrese el ID del producto a agregar: ");
                         Long idProd = scanner.nextLong();
-                        
+
                         System.out.print("Ingrese la cantidad: ");
                         int cant = scanner.nextInt();
 
@@ -481,13 +675,128 @@ private static void menuUsuarios(Scanner scanner, UsuarioService uService) {
 
                 case 4:
                     try {
+                        scanner.nextLine();
                         System.out.print("Ingrese el ID del pedido a dar de baja: ");
                         Long id = scanner.nextLong();
-                        pedService.eliminarPedido(id);
-                        System.out.println("Pedido eliminado correctamente.");
-                    } catch (Exception e) {
-                        System.out.println("Error: " + e.getMessage());
                         scanner.nextLine();
+
+                        // Pedir confirmación antes de realizar la baja lógica
+                        System.out.print("¿Está seguro que desea eliminar el pedido? (S/N): ");
+                        String confirmacion = scanner.nextLine();
+
+                        if (confirmacion.equalsIgnoreCase("S")) {
+                            pedService.eliminarPedido(id);
+                            System.out.println("Pedido con ID: " + id + " eliminado correctamente.");
+                        } else {
+                            System.out.println("Operación cancelada.");
+                        }
+                    } catch (IdNoEncontradoException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                    break;
+
+                case 5:
+                    try {
+                        // Mostramos los pedidos activos para que el usuario sepa qué ID ingresar
+                        List<Pedido> pedidosActualizar = pedService.listarPedidos();
+                        if (pedidosActualizar.isEmpty()) {
+                            System.out.println("No hay pedidos activos.");
+                            break;
+                        }
+                        for (Pedido p : pedidosActualizar) {
+                            System.out.println(p);
+                        }
+
+                        scanner.nextLine();
+                        System.out.print("Ingrese el ID del pedido a actualizar: ");
+                        Long id = scanner.nextLong();
+                        scanner.nextLine();
+
+                        // Preguntamos qué quiere actualizar
+                        System.out.println("¿Qué desea actualizar?");
+                        System.out.println("1. Estado");
+                        System.out.println("2. Forma de pago");
+                        System.out.print("Seleccione: ");
+                        int subOpcion = scanner.nextInt();
+                        scanner.nextLine();
+
+                        if (subOpcion == 1) {
+                            // Mostramos los estados disponibles según el enum Estado
+                            System.out.println("Estados disponibles:");
+                            System.out.println("1. PENDIENTE");
+                            System.out.println("2. CONFIRMADO");
+                            System.out.println("3. TERMINADO");
+                            System.out.println("4. CANCELADO");
+                            System.out.print("Seleccione: ");
+                            int estadoOpcion = scanner.nextInt();
+                            scanner.nextLine();
+
+                            // Convertimos la opción numérica al enum correspondiente
+                            Estado nuevoEstado = Estado.PENDIENTE;
+                            switch (estadoOpcion) {
+                                case 1:
+                                    nuevoEstado = Estado.PENDIENTE;
+                                    break;
+                                case 2:
+                                    nuevoEstado = Estado.CONFIRMADO;
+                                    break;
+                                case 3:
+                                    nuevoEstado = Estado.TERMINADO;
+                                    break;
+                                case 4:
+                                    nuevoEstado = Estado.CANCELADO;
+                                    break;
+                                default:
+                                    System.out.println("Opción inválida.");
+                                    break;
+                            }
+                            // Delegamos al service la actualización del estado
+                            pedService.cambiarEstadoPedido(id, nuevoEstado);
+                            System.out.println("Estado del pedido con ID: " + id + " actualizado correctamente.");
+
+                        } else if (subOpcion == 2) {
+                            // Mostramos las formas de pago disponibles según el enum FormaPago
+                            System.out.println("Formas de pago disponibles:");
+                            System.out.println("1. EFECTIVO");
+                            System.out.println("2. TARJETA");
+                            System.out.println("3. TRANSFERENCIA");
+                            System.out.print("Seleccione: ");
+                            int fpOpcion = scanner.nextInt();
+                            scanner.nextLine();
+
+                            // Convertimos la opción numérica al enum correspondiente
+                            FormaPago nuevaFormaPago = FormaPago.EFECTIVO;
+                            switch (fpOpcion) {
+                                case 1:
+                                    nuevaFormaPago = FormaPago.EFECTIVO;
+                                    break;
+                                case 2:
+                                    nuevaFormaPago = FormaPago.TARJETA;
+                                    break;
+                                case 3:
+                                    nuevaFormaPago = FormaPago.TRANSFERENCIA;
+                                    break;
+                                default:
+                                    System.out.println("Opción inválida.");
+                                    break;
+                            }
+                            // Delegamos al service la actualización de la forma de pago
+                            pedService.cambiarFormaPagoPedido(id, nuevaFormaPago);
+                            System.out
+                                    .println("Forma de pago del pedido con ID: " + id + " actualizada correctamente.");
+
+                        } else {
+                            System.out.println("Opción inválida.");
+                        }
+
+                    } catch (IdNoEncontradoException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    } catch (IdEliminadoException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Error: " + e.getMessage());
                     }
                     break;
 
@@ -496,7 +805,7 @@ private static void menuUsuarios(Scanner scanner, UsuarioService uService) {
                     break;
 
                 default:
-                    System.out.println("Opción inválida.");
+                    System.out.println("Opción inválida. Intentelo nuevamente.");
             }
         } while (opcion != 0);
     }

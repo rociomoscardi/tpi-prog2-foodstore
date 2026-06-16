@@ -3,15 +3,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package integrado.prog2.service;
+
 import integrado.prog2.entities.Pedido;
 import integrado.prog2.entities.Producto;
 import integrado.prog2.enums.Estado;
+import integrado.prog2.enums.FormaPago;
 import integrado.prog2.exception.IdDuplicadoException;
 import integrado.prog2.exception.IdEliminadoException;
 import integrado.prog2.exception.IdNoEncontradoException;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  *
  * @author Abiga
@@ -70,6 +73,19 @@ public class PedidoService {
         pedido.setEstado(nuevoEstado);
     }
 
+    // Cambiar la forma de pago de un pedido existente
+    // Valida que el pedido exista y no esté eliminado antes de modificarlo
+    public void cambiarFormaPagoPedido(Long id, FormaPago nuevaFormaPago) {
+        Pedido pedido = buscarPorId(id);
+        if (pedido == null) {
+            throw new IdNoEncontradoException("No se encontró un pedido con ID: " + id);
+        }
+        if (pedido.isEliminado()) {
+            throw new IdEliminadoException("El pedido con ID: " + id + " está eliminado.");
+        }
+        pedido.setFormaPago(nuevaFormaPago);
+    }
+
     // 6. Eliminar Pedido (Baja Lógica)
     public void eliminarPedido(Long id) {
         Pedido pedido = buscarPorId(id);
@@ -93,8 +109,9 @@ public class PedidoService {
         if (pedido.getEstado() != Estado.PENDIENTE) {
             throw new IllegalArgumentException("Solo se pueden agregar productos a pedidos PENDIENTES.");
         }
-        
-        // El pedido mismo se encarga de las validaciones de stock y subtotal a través de este método
+
+        // El pedido mismo se encarga de las validaciones de stock y subtotal a través
+        // de este método
         pedido.addDetallePedido(cantidad, null, producto);
     }
 
