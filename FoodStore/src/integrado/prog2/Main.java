@@ -41,6 +41,7 @@ public class Main {
             System.out.print("Seleccione: ");
             opcion = scanner.nextInt();
 
+            // Llamar al método correspondiente según la opción elegida
             switch (opcion) {
                 case 1:
                     menuCategorias(scanner, cService);
@@ -442,7 +443,7 @@ public class Main {
                 case 1:
                     List<Usuario> usuarios = uService.listarUsuarios();
                     if (usuarios.isEmpty()) {
-                        System.out.println("No hay usuarios cargados activos.");
+                        System.out.println("No hay usuarios cargados.");
                     } else {
                         for (Usuario usuario : usuarios) {
                             System.out.println(usuario);
@@ -621,7 +622,7 @@ public class Main {
                         // Buscamos si el usuario existe antes de hacer el pedido
                         Usuario user = uService.buscarPorId(idUsuario);
                         if (user == null) {
-                            System.out.println("Error: No se encontró un usuario con ese ID.");
+                            System.out.println("No se encontró un usuario con el ID ingresado.");
                             break;
                         }
 
@@ -640,10 +641,12 @@ public class Main {
                         pedService.crearPedido(nuevoPedido);
                         System.out.println("Pedido creado con éxito con estado PENDIENTE.");
 
-                    } catch (Exception e) {
+                    } catch (IdDuplicadoException e) {
                         System.out.println("Error: " + e.getMessage());
-                        scanner.nextLine(); // Limpiamos buffer
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Error: " + e.getMessage());
                     }
+
                     break;
 
                 case 3:
@@ -660,16 +663,19 @@ public class Main {
                         // Buscamos si el producto existe
                         Producto prod = pService.buscarPorId(idProd);
                         if (prod == null) {
-                            System.out.println("Error: Producto no encontrado.");
+                            System.out.println("No se encontró un producto con el ID ingresado.");
                             break;
                         }
 
                         pedService.agregarProductoAPedido(idPed, prod, cant);
-                        System.out.println("Producto agregado exitosamente al pedido.");
+                        System.out.println("Producto agregado correctamente al pedido.");
 
-                    } catch (Exception e) {
-                        System.out.println("Error al agregar: " + e.getMessage());
-                        scanner.nextLine();
+                    } catch (IdNoEncontradoException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    } catch (IdEliminadoException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Error: " + e.getMessage());
                     }
                     break;
 
