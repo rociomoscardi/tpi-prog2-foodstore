@@ -264,7 +264,7 @@ public class Main {
 
                         // Verificar si el ID ya existe antes de pedir más datos
                         if (pService.buscarPorId(id) != null) {
-                            System.out.println("Error: ya existe un producto con ID: " + id);
+                            System.out.println("Error: Ya existe un producto con ID: " + id);
                             break;
                         }
 
