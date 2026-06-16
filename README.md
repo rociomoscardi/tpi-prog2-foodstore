@@ -67,3 +67,5 @@ src/
 - Baja lógica (soft delete) en todas las entidades
 - Validaciones de entrada y manejo de excepciones propias
 - Interfaz `Calculable` para el cálculo de totales de pedidos
+- Validación de ID duplicado antes de pedir todos los datos
+- Actualización de estado y forma de pago de pedidos
