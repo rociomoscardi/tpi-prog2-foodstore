@@ -9,6 +9,7 @@ import java.util.List;
 
 public class Pedido extends Base implements Calculable {
 
+    // Atributos privados
     private LocalDate fecha;
     private Estado estado;
     private Double total;
@@ -16,6 +17,7 @@ public class Pedido extends Base implements Calculable {
     private Usuario usuario;
     private List<DetallePedido> detalles;
 
+    // Constructores
     public Pedido() {
         super();
         this.fecha = LocalDate.now();
@@ -34,6 +36,7 @@ public class Pedido extends Base implements Calculable {
         this.detalles = new ArrayList<>();
     }
 
+    // Getters y Setters con validaciones
     public LocalDate getFecha() {
         return fecha;
     }
@@ -66,7 +69,7 @@ public class Pedido extends Base implements Calculable {
         }
 
         if (total < 0) {
-            throw new IllegalArgumentException("El total no puede ser menor a 0.");
+            throw new IllegalArgumentException("El total no puede ser negativo.");
         }
 
         this.total = total;
@@ -89,7 +92,7 @@ public class Pedido extends Base implements Calculable {
 
     public void setUsuario(Usuario usuario) {
         if (usuario == null) {
-            throw new IllegalArgumentException("El pedido debe tener un usuario.");
+            throw new IllegalArgumentException("El pedido debe tener un usuario asociado.");
         }
 
         if (usuario.isEliminado()) {
@@ -167,7 +170,7 @@ public class Pedido extends Base implements Calculable {
         DetallePedido detalle = findDetallePedidoByProducto(producto);
 
         if (detalle == null) {
-            throw new IllegalArgumentException("No existe un detalle para ese producto.");
+            throw new IllegalArgumentException("No existe un detalle para el producto ingresado.");
         }
 
         detalle.eliminar();
@@ -187,6 +190,7 @@ public class Pedido extends Base implements Calculable {
         this.total = suma;
     }
 
+    // Método toString para mostrar información del pedido
     @Override
     public String toString() {
         return "ID: " + getId() +
