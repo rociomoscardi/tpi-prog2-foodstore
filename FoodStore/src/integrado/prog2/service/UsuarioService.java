@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package integrado.prog2.service;
 
 import integrado.prog2.entities.Usuario;
@@ -12,21 +8,16 @@ import integrado.prog2.exception.IdNoEncontradoException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Abiga
- */
 public class UsuarioService {
-    // 1. Declaramos la colección (una Lista) para guardar los usuarios en memoria
+    // La colección de usuarios se almacena en memoria utilizando una lista
     private List<Usuario> listaUsuarios;
 
-    // 2. Creamos el constructor para inicializar la lista vacía cuando se crea este
-    // servicio
+    // Inicializa la lista vacía de usuarios
     public UsuarioService() {
         this.listaUsuarios = new ArrayList<>();
     }
 
-    // 3. Crear: Método para agregar un nuevo usuario a la lista
+    // Crear: Método para agregar un nuevo usuario a la lista
     // Recibe el usuario armado desde el menú y lo guarda en nuestro almacén
     public void agregarUsuario(Usuario nuevoUsuario) {
         if (nuevoUsuario == null) {
@@ -40,7 +31,7 @@ public class UsuarioService {
         this.listaUsuarios.add(nuevoUsuario);
     }
 
-    // 4. Leer: Método para obtener la lista de usuarios activos
+    // Leer: Método para obtener la lista de usuarios activos
     // Filtra el almacén y devuelve solo los usuarios que NO tienen baja lógica
     public List<Usuario> listarUsuarios() {
         List<Usuario> usuariosActivos = new ArrayList<>();
@@ -52,8 +43,7 @@ public class UsuarioService {
         return usuariosActivos;
     }
 
-    // 5. Utilidad: Buscar un usuario por su ID
-    // Nos ayuda a encontrarlo para después editarlo o eliminarlo lógicamente
+    // Buscar un usuario por su ID
     public Usuario buscarPorId(Long id) {
         for (Usuario usuario : listaUsuarios) {
             if (usuario.getId().equals(id)) {
@@ -63,13 +53,13 @@ public class UsuarioService {
         return null;
     }
 
-    // 6. Actualizar: Método para editar los datos de un usuario existente
+    // Actualizar: Método para editar los datos de un usuario existente
     // Usa buscarPorId para encontrarlo y, si existe, cambia sus datos
     public void editarUsuario(Long id, String nuevoNombre, String nuevoApellido, String nuevoMail, String nuevoCelular,
-            String nuevaContrasena) {
+            String nuevaContrasenia) {
         Usuario usuarioAEditar = buscarPorId(id);
         if (usuarioAEditar == null) {
-            throw new IdNoEncontradoException("No se encontró un usuario con ID: " + id);
+            throw new IdNoEncontradoException("No se encontró un usuario con ID: " + id + ".");
         }
         if (usuarioAEditar.isEliminado()) {
             throw new IdEliminadoException("El usuario con ID: " + id + " fue eliminado y no se puede editar.");
@@ -78,16 +68,16 @@ public class UsuarioService {
         usuarioAEditar.setApellido(nuevoApellido);
         usuarioAEditar.setMail(nuevoMail);
         usuarioAEditar.setCelular(nuevoCelular);
-        usuarioAEditar.setContrasena(nuevaContrasena);
+        usuarioAEditar.setContrasenia(nuevaContrasenia);
     }
 
-    // 7. Eliminar: Método para dar de baja un usuario (Soft Delete)
+    // Eliminar: Método para dar de baja un usuario (Soft Delete)
     // Busca al usuario por su ID y, si lo encuentra, le cambia el estado a
     // eliminado sin borrarlo físicamente
     public void eliminarUsuario(Long id) {
         Usuario usuarioAEliminar = buscarPorId(id);
         if (usuarioAEliminar == null) {
-            throw new IdNoEncontradoException("No se encontró un usuario con ID: " + id);
+            throw new IdNoEncontradoException("No se encontró un usuario con ID: " + id + ".");
         }
         usuarioAEliminar.eliminar();
     }

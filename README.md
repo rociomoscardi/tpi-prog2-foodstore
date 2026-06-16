@@ -16,9 +16,9 @@ Food Store es una aplicación de consola desarrollada en Java 21, orientada a la
 | Nombre | Rol |
 |--------|-----|
 | Rocío Moscardi | Documentación, README, revisión de código, menú de Categorías y Productos |
-| (Integrante B) | Entidades Java y generación de datos |
-| Fernando Weisheim | Servicios de Categoría y Producto |
-| (Integrante D) | Servicios de Usuario, Pedido y menú |
+| Casto Gil | Entidades Java, enums e interfaz Calculable |
+| Fernando Weisheim | Servicios de Categoría y Producto, excepciones propias |
+| Abigail Santillán | Servicios de Usuario y Pedido, menú de Usuarios y Pedidos |
 
 
 
@@ -40,7 +40,7 @@ src/
     ├── entities/       (clases del UML: Base, Categoria, Producto, Usuario, Pedido, DetallePedido)
     ├── enums/          (Rol, Estado, FormaPago)
     ├── exception/      (excepciones propias)
-    ├── interfaces/     (calculable)
+    ├── interfaces/     (Calculable)
     └── service/        (lógica de negocio)
 ```
 
@@ -67,3 +67,5 @@ src/
 - Baja lógica (soft delete) en todas las entidades
 - Validaciones de entrada y manejo de excepciones propias
 - Interfaz `Calculable` para el cálculo de totales de pedidos
+- Validación de ID duplicado antes de pedir todos los datos
+- Actualización de estado y forma de pago de pedidos

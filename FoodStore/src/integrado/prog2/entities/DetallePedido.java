@@ -2,10 +2,12 @@ package integrado.prog2.entities;
 
 public class DetallePedido extends Base {
 
+    // Atributos privados
     private int cantidad;
     private Double subtotal;
     private Producto producto;
 
+    // Constructores
     public DetallePedido() {
         super();
         this.subtotal = 0.0;
@@ -18,6 +20,7 @@ public class DetallePedido extends Base {
         calcularSubtotal();
     }
 
+    // Getters y Setters
     public int getCantidad() {
         return cantidad;
     }
@@ -36,11 +39,11 @@ public class DetallePedido extends Base {
 
     public void setSubtotal(Double subtotal) {
         if (subtotal == null) {
-            throw new IllegalArgumentException("El subtotal no puede ser nulo.");
+            throw new IllegalArgumentException("El subtotal no debe ser nulo.");
         }
 
         if (subtotal < 0) {
-            throw new IllegalArgumentException("El subtotal no puede ser menor a 0.");
+            throw new IllegalArgumentException("El subtotal no puede ser negativo.");
         }
 
         this.subtotal = subtotal;
@@ -52,7 +55,7 @@ public class DetallePedido extends Base {
 
     public void setProducto(Producto producto) {
         if (producto == null) {
-            throw new IllegalArgumentException("El detalle debe tener un producto.");
+            throw new IllegalArgumentException("El producto del detalle no puede ser nulo.");
         }
 
         if (producto.isEliminado()) {
@@ -74,6 +77,7 @@ public class DetallePedido extends Base {
         this.subtotal = cantidad * producto.getPrecio();
     }
 
+    // Método toString para mostrar la información del detalle del pedido
     @Override
     public String toString() {
         return "ID: " + getId() +

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package integrado.prog2.service;
 
 import integrado.prog2.exception.*;
@@ -11,12 +7,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- *
- * @author fernando
- */
 public class ProductoService {
 
+    // La colección de productos se almacena en memoria utilizando una lista.
     private List<Producto> productos = new ArrayList<>();
 
     public void agregarProducto(Producto nuevoProducto) {
@@ -47,7 +40,7 @@ public class ProductoService {
             }
         }
 
-        throw new IdNoEncontradoException("El ID: " + productoId + " no se encontró para eliminar el producto.");
+        throw new IdNoEncontradoException("No se encontró un producto con ID: " + productoId + ".");
 
     }
 
@@ -56,9 +49,9 @@ public class ProductoService {
 
             if (productoActualizar.getId().equals(productoId)) {
 
-                if (productoActualizar.isEliminado() == true) {
+                if (productoActualizar.isEliminado()) {
                     throw new IdEliminadoException(
-                            "El producto con el ID:" + productoId + " fue removido de la lista y no se puede editar");
+                            "El producto con ID: " + productoId + " fue eliminado y. No se puede editar");
                 }
 
                 productoActualizar.setPrecio(precio);
@@ -70,7 +63,7 @@ public class ProductoService {
             }
 
         }
-        throw new IdNoEncontradoException("Error. El ID:" + productoId + " no se encontró.");
+        throw new IdNoEncontradoException("No se encontró un producto con ID: " + productoId + ".");
 
     }
 
@@ -85,7 +78,9 @@ public class ProductoService {
         return productosDisponibles;
     }
 
-public Producto buscarPorId(Long idProd) {
+    // Método adicional para buscar un producto por su ID. Devuelve el producto si
+    // se encuentra, o null si no se encuentra.
+    public Producto buscarPorId(Long idProd) {
         for (Producto producto : productos) {
             if (producto.getId().equals(idProd)) {
                 return producto;

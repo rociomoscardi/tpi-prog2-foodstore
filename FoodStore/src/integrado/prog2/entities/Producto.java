@@ -2,6 +2,7 @@ package integrado.prog2.entities;
 
 public class Producto extends Base {
 
+    // Atributos privados
     private String nombre;
     private Double precio;
     private String descripcion;
@@ -10,6 +11,7 @@ public class Producto extends Base {
     private boolean disponible;
     private Categoria categoria;
 
+    // Constructores
     public Producto() {
         super();
         this.disponible = true;
@@ -27,6 +29,7 @@ public class Producto extends Base {
         setCategoria(categoria);
     }
 
+    // Getters y Setters con validaciones
     public String getNombre() {
         return nombre;
     }
@@ -103,7 +106,7 @@ public class Producto extends Base {
 
     public void setCategoria(Categoria categoria) {
         if (categoria == null) {
-            throw new IllegalArgumentException("El producto debe tener una categoría.");
+            throw new IllegalArgumentException("La categoría del producto no puede ser nula.");
         }
 
         if (categoria.isEliminado()) {
@@ -113,13 +116,14 @@ public class Producto extends Base {
         this.categoria = categoria;
     }
 
+    // Método toString para mostrar información del producto
     @Override
     public String toString() {
         return "ID: " + getId() +
                 " | " + nombre +
                 " | Precio: $" + precio +
                 " | Stock: " + stock +
-                " | Disponible: " + disponible +
+                " | Disponible: " + (disponible ? "Sí" : "No") +
                 " | Categoría: " + (categoria != null ? categoria.getNombre() : "Sin categoría");
     }
 }
