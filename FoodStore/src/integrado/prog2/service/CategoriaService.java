@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package integrado.prog2.service;
 
 import integrado.prog2.entities.Categoria;
@@ -9,12 +5,9 @@ import integrado.prog2.exception.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author fernando
- */
 public class CategoriaService {
 
+    // La colección de categorías se almacena en memoria utilizando una lista.
     private List<Categoria> categorias = new ArrayList<>();
 
     public List<Categoria> listarCategorias() {
@@ -37,7 +30,7 @@ public class CategoriaService {
                 return;
             }
         }
-        throw new IdNoEncontradoException("La categoria con ID: " + categoriaId + " no se encontró.");
+        throw new IdNoEncontradoException("No se encontró una categoría con ID: " + categoriaId);
     }
 
     public void agregarCategoria(Categoria categoria) {
@@ -46,7 +39,7 @@ public class CategoriaService {
         }
         for (Categoria categoriaAgregar : categorias) {
             if (categoriaAgregar.getId().equals(categoria.getId())) {
-                throw new IdDuplicadoException("La categoria ya existe y el ID es: " + categoria.getId());
+                throw new IdDuplicadoException("Ya existe una categoría con ID: " + categoria.getId() + ".");
             }
         }
         categorias.add(categoria);
@@ -58,7 +51,7 @@ public class CategoriaService {
 
                 if (categoriaEditar.isEliminado() == true) {
                     throw new IdEliminadoException(
-                            "El ID: " + categoriaEditar.getId() + " fue removido de la lista y no se puede editar.");
+                            "La categoría con ID: " + categoriaEditar.getId() + " fue eliminada. No se puede editar.");
                 }
 
                 categoriaEditar.setNombre(nombre);
@@ -66,7 +59,7 @@ public class CategoriaService {
                 return;
             }
         }
-        throw new IdNoEncontradoException("La categoria con ID:" + categoriaId + " no se encontro para editar");
+        throw new IdNoEncontradoException("No se encontró una categoría con ID: " + categoriaId + ".");
 
     }
 
