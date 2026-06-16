@@ -4,6 +4,7 @@ import integrado.prog2.entities.Categoria;
 import integrado.prog2.entities.Pedido;
 import integrado.prog2.entities.Producto;
 import integrado.prog2.entities.Usuario;
+import integrado.prog2.enums.Estado;
 import integrado.prog2.enums.FormaPago;
 import integrado.prog2.enums.Rol;
 import integrado.prog2.exception.IdDuplicadoException;
@@ -589,9 +590,10 @@ public class Main {
         do {
             System.out.println("\n=== PEDIDOS ===");
             System.out.println("1. Listar pedidos");
-            System.out.println("2. Crear nuevo pedido (vacío)");
+            System.out.println("2. Crear nuevo pedido");
             System.out.println("3. Agregar producto a un pedido");
             System.out.println("4. Eliminar pedido");
+            System.out.println("5. Actualizar estado o forma de pago");
             System.out.println("0. Volver");
             System.out.print("Seleccione: ");
             opcion = scanner.nextInt();
@@ -689,6 +691,109 @@ public class Main {
                             System.out.println("Operación cancelada.");
                         }
                     } catch (IdNoEncontradoException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                    break;
+
+                case 5:
+                    try {
+                        // Mostramos los pedidos activos para que el usuario sepa qué ID ingresar
+                        List<Pedido> pedidosActualizar = pedService.listarPedidos();
+                        if (pedidosActualizar.isEmpty()) {
+                            System.out.println("No hay pedidos activos.");
+                            break;
+                        }
+                        for (Pedido p : pedidosActualizar) {
+                            System.out.println(p);
+                        }
+
+                        scanner.nextLine();
+                        System.out.print("Ingrese el ID del pedido a actualizar: ");
+                        Long id = scanner.nextLong();
+                        scanner.nextLine();
+
+                        // Preguntamos qué quiere actualizar
+                        System.out.println("¿Qué desea actualizar?");
+                        System.out.println("1. Estado");
+                        System.out.println("2. Forma de pago");
+                        System.out.print("Seleccione: ");
+                        int subOpcion = scanner.nextInt();
+                        scanner.nextLine();
+
+                        if (subOpcion == 1) {
+                            // Mostramos los estados disponibles según el enum Estado
+                            System.out.println("Estados disponibles:");
+                            System.out.println("1. PENDIENTE");
+                            System.out.println("2. CONFIRMADO");
+                            System.out.println("3. TERMINADO");
+                            System.out.println("4. CANCELADO");
+                            System.out.print("Seleccione: ");
+                            int estadoOpcion = scanner.nextInt();
+                            scanner.nextLine();
+
+                            // Convertimos la opción numérica al enum correspondiente
+                            Estado nuevoEstado = Estado.PENDIENTE;
+                            switch (estadoOpcion) {
+                                case 1:
+                                    nuevoEstado = Estado.PENDIENTE;
+                                    break;
+                                case 2:
+                                    nuevoEstado = Estado.CONFIRMADO;
+                                    break;
+                                case 3:
+                                    nuevoEstado = Estado.TERMINADO;
+                                    break;
+                                case 4:
+                                    nuevoEstado = Estado.CANCELADO;
+                                    break;
+                                default:
+                                    System.out.println("Opción inválida.");
+                                    break;
+                            }
+                            // Delegamos al service la actualización del estado
+                            pedService.cambiarEstadoPedido(id, nuevoEstado);
+                            System.out.println("Estado del pedido con ID: " + id + " actualizado correctamente.");
+
+                        } else if (subOpcion == 2) {
+                            // Mostramos las formas de pago disponibles según el enum FormaPago
+                            System.out.println("Formas de pago disponibles:");
+                            System.out.println("1. EFECTIVO");
+                            System.out.println("2. TARJETA");
+                            System.out.println("3. TRANSFERENCIA");
+                            System.out.print("Seleccione: ");
+                            int fpOpcion = scanner.nextInt();
+                            scanner.nextLine();
+
+                            // Convertimos la opción numérica al enum correspondiente
+                            FormaPago nuevaFormaPago = FormaPago.EFECTIVO;
+                            switch (fpOpcion) {
+                                case 1:
+                                    nuevaFormaPago = FormaPago.EFECTIVO;
+                                    break;
+                                case 2:
+                                    nuevaFormaPago = FormaPago.TARJETA;
+                                    break;
+                                case 3:
+                                    nuevaFormaPago = FormaPago.TRANSFERENCIA;
+                                    break;
+                                default:
+                                    System.out.println("Opción inválida.");
+                                    break;
+                            }
+                            // Delegamos al service la actualización de la forma de pago
+                            pedService.cambiarFormaPagoPedido(id, nuevaFormaPago);
+                            System.out
+                                    .println("Forma de pago del pedido con ID: " + id + " actualizada correctamente.");
+
+                        } else {
+                            System.out.println("Opción inválida.");
+                        }
+
+                    } catch (IdNoEncontradoException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    } catch (IdEliminadoException e) {
                         System.out.println("Error: " + e.getMessage());
                     } catch (IllegalArgumentException e) {
                         System.out.println("Error: " + e.getMessage());
