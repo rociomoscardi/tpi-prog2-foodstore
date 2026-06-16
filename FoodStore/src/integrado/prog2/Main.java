@@ -45,7 +45,7 @@ public class Main {
                     menuCategorias(scanner, cService);
                     break;
                 case 2:
-                    // menuProductos(scanner, pService, cService);
+                    menuProductos(scanner, pService, cService);
                     break;
                 case 3:
                     menuUsuarios(scanner, uService);
@@ -222,6 +222,204 @@ public class Main {
             }
 
         } while (opcion != 0); // El menú se repite hasta que el usuario elija 0
+    }
+
+    // --- MENÚ DE PRODUCTOS ---
+    private static void menuProductos(Scanner scanner, ProductoService pService, CategoriaService cService) {
+        int opcion;
+
+        do {
+            System.out.println("\n=== PRODUCTOS ===");
+            System.out.println("1. Listar productos");
+            System.out.println("2. Agregar producto");
+            System.out.println("3. Editar producto");
+            System.out.println("4. Eliminar producto");
+            System.out.println("0. Volver");
+            System.out.print("Seleccione: ");
+            opcion = scanner.nextInt();
+
+            switch (opcion) {
+
+                case 1:
+                    // Obtener la lista de productos no eliminados y disponibles
+                    List<Producto> productos = pService.listarProductos();
+                    if (productos.isEmpty()) {
+                        System.out.println("No hay productos disponibles.");
+                    } else {
+                        for (Producto producto : productos) {
+                            System.out.println(producto);
+                        }
+                    }
+                    break;
+
+                case 2:
+                    try {
+                        scanner.nextLine();
+
+                        System.out.print("Ingrese el ID del producto: ");
+                        Long id = scanner.nextLong();
+                        scanner.nextLine();
+
+                        // Verificar si el ID ya existe antes de pedir más datos
+                        if (pService.buscarPorId(id) != null) {
+                            System.out.println("Error: ya existe un producto con ID: " + id);
+                            break;
+                        }
+
+                        System.out.print("Ingrese el nombre: ");
+                        String nombre = scanner.nextLine();
+
+                        System.out.print("Ingrese la descripción: ");
+                        String descripcion = scanner.nextLine();
+
+                        System.out.print("Ingrese el precio: ");
+                        Double precio = scanner.nextDouble();
+                        scanner.nextLine();
+
+                        System.out.print("Ingrese el stock: ");
+                        int stock = scanner.nextInt();
+                        scanner.nextLine();
+
+                        System.out.print("Ingrese la imagen (o Enter para omitir): ");
+                        String imagen = scanner.nextLine();
+
+                        System.out.print("¿Está disponible? (S/N): ");
+                        String dispStr = scanner.nextLine();
+                        boolean disponible = dispStr.equalsIgnoreCase("S");
+
+                        // Mostrar las categorías disponibles para asociar
+                        List<Categoria> categorias = cService.listarCategorias();
+                        if (categorias.isEmpty()) {
+                            System.out.println("Error: No hay categorías disponibles. Cree una categoría primero.");
+                            break;
+                        }
+                        System.out.println("Categorías disponibles:");
+                        for (Categoria cat : categorias) {
+                            System.out.println(cat);
+                        }
+                        System.out.print("Ingrese el ID de la categoría: ");
+                        Long idCategoria = scanner.nextLong();
+                        scanner.nextLine();
+
+                        // Buscar la categoría seleccionada
+                        Categoria categoria = cService.buscarPorId(idCategoria);
+                        if (categoria == null) {
+                            System.out.println("Error: No se encontró una categoría con ese ID.");
+                            break;
+                        }
+
+                        // Crear el producto con todos los datos
+                        Producto nuevoProducto = new Producto(id, nombre, precio, descripcion, stock, imagen,
+                                disponible, categoria);
+                        pService.agregarProducto(nuevoProducto);
+                        System.out.println("Producto agregado correctamente con ID: " + id);
+
+                    } catch (IdDuplicadoException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                    break;
+
+                case 3:
+                    // Mostrar productos disponibles para que el usuario sepa qué ID ingresar
+                    List<Producto> productosEditar = pService.listarProductos();
+                    if (productosEditar.isEmpty()) {
+                        System.out.println("No hay productos disponibles para editar.");
+                    } else {
+                        for (Producto producto : productosEditar) {
+                            System.out.println(producto);
+                        }
+                        try {
+                            scanner.nextLine();
+
+                            System.out.print("Ingrese el ID del producto a editar: ");
+                            Long id = scanner.nextLong();
+                            scanner.nextLine();
+
+                            System.out.print("Ingrese el nuevo precio: ");
+                            double precio = scanner.nextDouble();
+                            scanner.nextLine();
+
+                            System.out.print("Ingrese el nuevo stock: ");
+                            int stock = scanner.nextInt();
+                            scanner.nextLine();
+
+                            // Mostrar categorías disponibles
+                            List<Categoria> categoriasEditar = cService.listarCategorias();
+                            System.out.println("Categorías disponibles:");
+                            for (Categoria cat : categoriasEditar) {
+                                System.out.println(cat);
+                            }
+                            System.out.print("Ingrese el ID de la nueva categoría: ");
+                            Long idCategoria = scanner.nextLong();
+                            scanner.nextLine();
+
+                            Categoria categoria = cService.buscarPorId(idCategoria);
+                            if (categoria == null) {
+                                System.out.println("Error: No se encontró una categoría con el ID ingresado.");
+                                break;
+                            }
+
+                            pService.editarProducto(id, precio, stock, categoria);
+                            System.out.println("Producto con ID: " + id + " editado correctamente.");
+
+                        } catch (IdNoEncontradoException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        } catch (IdEliminadoException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        }
+                    }
+                    break;
+
+                case 4:
+                    // Mostrar productos disponibles para que el usuario sepa qué ID ingresar
+                    List<Producto> productosEliminar = pService.listarProductos();
+                    if (productosEliminar.isEmpty()) {
+                        System.out.println("No hay productos disponibles para eliminar.");
+                    } else {
+                        for (Producto producto : productosEliminar) {
+                            System.out.println(producto);
+                        }
+                        try {
+                            scanner.nextLine();
+
+                            System.out.print("Ingrese el ID del producto a eliminar: ");
+                            Long id = scanner.nextLong();
+                            scanner.nextLine();
+
+                            // Pedir confirmación antes de realizar la baja lógica
+                            System.out.print("¿Está seguro? (S/N): ");
+                            String confirmacion = scanner.nextLine();
+
+                            if (confirmacion.equalsIgnoreCase("S")) {
+                                pService.eliminarProducto(id);
+                                System.out.println("Producto con ID: " + id + " eliminado correctamente.");
+                            } else {
+                                System.out.println("Operación cancelada.");
+                            }
+
+                        } catch (IdNoEncontradoException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        } catch (IdEliminadoException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        }
+                    }
+                    break;
+
+                case 0:
+                    System.out.println("Volviendo al menú principal...");
+                    break;
+
+                default:
+                    System.out.println("Opción inválida. Intentelo nuevamente.");
+            }
+
+        } while (opcion != 0);
     }
 
     // --- MENÚ DE USUARIOS ---
