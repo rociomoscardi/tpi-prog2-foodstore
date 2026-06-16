@@ -66,7 +66,7 @@ public class UsuarioService {
     // 6. Actualizar: Método para editar los datos de un usuario existente
     // Usa buscarPorId para encontrarlo y, si existe, cambia sus datos
     public void editarUsuario(Long id, String nuevoNombre, String nuevoApellido, String nuevoMail, String nuevoCelular,
-            String nuevaContrasena) {
+            String nuevaContrasenia) {
         Usuario usuarioAEditar = buscarPorId(id);
         if (usuarioAEditar == null) {
             throw new IdNoEncontradoException("No se encontró un usuario con ID: " + id);
@@ -78,7 +78,7 @@ public class UsuarioService {
         usuarioAEditar.setApellido(nuevoApellido);
         usuarioAEditar.setMail(nuevoMail);
         usuarioAEditar.setCelular(nuevoCelular);
-        usuarioAEditar.setContrasena(nuevaContrasena);
+        usuarioAEditar.setContrasenia(nuevaContrasenia);
     }
 
     // 7. Eliminar: Método para dar de baja un usuario (Soft Delete)
