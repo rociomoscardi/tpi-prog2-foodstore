@@ -664,13 +664,25 @@ public class Main {
 
                 case 4:
                     try {
+                        scanner.nextLine();
                         System.out.print("Ingrese el ID del pedido a dar de baja: ");
                         Long id = scanner.nextLong();
-                        pedService.eliminarPedido(id);
-                        System.out.println("Pedido eliminado correctamente.");
-                    } catch (Exception e) {
-                        System.out.println("Error: " + e.getMessage());
                         scanner.nextLine();
+
+                        // Pedir confirmación antes de realizar la baja lógica
+                        System.out.print("¿Está seguro que desea eliminar el pedido? (S/N): ");
+                        String confirmacion = scanner.nextLine();
+
+                        if (confirmacion.equalsIgnoreCase("S")) {
+                            pedService.eliminarPedido(id);
+                            System.out.println("Pedido con ID: " + id + " eliminado correctamente.");
+                        } else {
+                            System.out.println("Operación cancelada.");
+                        }
+                    } catch (IdNoEncontradoException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Error: " + e.getMessage());
                     }
                     break;
 
