@@ -99,7 +99,7 @@ public class Main {
                     }
                     break;
 
-                case 2:
+case 2:
                     try {
                         System.out.print("Ingrese el ID: ");
                         String idStr = scanner.nextLine().trim();
@@ -115,7 +115,22 @@ public class Main {
                         }
 
                         System.out.print("Ingrese el nombre: ");
-                        String nombre = scanner.nextLine();
+                        String nombre = scanner.nextLine().trim();
+
+                        //Validar nombre único al agregar ---
+                        boolean nombreDuplicado = false;
+                        for (Categoria c : cService.listarCategorias()) {
+                            if (c.getNombre().equalsIgnoreCase(nombre)) {
+                                nombreDuplicado = true;
+                                break;
+                            }
+                        }
+                        if (nombreDuplicado) {
+                            System.out.println("Error: Ya existe una categoría con el nombre '" + nombre + "'.");
+                            break;
+                        }
+                        // -----------------------------------------------------
+
                         System.out.print("Ingrese la descripción: ");
                         String descripcion = scanner.nextLine();
 
@@ -150,7 +165,22 @@ public class Main {
                             Long id = Long.parseLong(idStr);
 
                             System.out.print("Ingrese el nuevo nombre: ");
-                            String nombre = scanner.nextLine();
+                            String nombre = scanner.nextLine().trim();
+
+                            // Validar nombre único al editar (que no sea de otra categoría) ---
+                            boolean nombreDuplicadoEdit = false;
+                            for (Categoria c : cService.listarCategorias()) {
+                                if (c.getNombre().equalsIgnoreCase(nombre) && !c.getId().equals(id)) {
+                                    nombreDuplicadoEdit = true;
+                                    break;
+                                }
+                            }
+                            if (nombreDuplicadoEdit) {
+                                System.out.println("Error: Ya existe otra categoría con el nombre '" + nombre + "'.");
+                                break;
+                            }
+                            // ----------------------------------------------------------------------------------
+
                             System.out.print("Ingrese la nueva descripción: ");
                             String descripcion = scanner.nextLine();
 
@@ -448,7 +478,7 @@ public class Main {
                     }
                     break;
 
-                case 2:
+           case 2:
                     try {
                         System.out.print("Ingrese el ID: ");
                         String idStr = scanner.nextLine().trim();
@@ -466,7 +496,22 @@ public class Main {
                         System.out.print("Ingrese el nombre: ");
                         String nombre = scanner.nextLine();
                         System.out.print("Ingrese el mail: ");
-                        String mail = scanner.nextLine();
+                        String mail = scanner.nextLine().trim();
+
+                        // Validar mail único al crear ---
+                        boolean mailDuplicado = false;
+                        for (Usuario u : uService.listarUsuarios()) {
+                            if (u.getMail().equalsIgnoreCase(mail)) {
+                                mailDuplicado = true;
+                                break;
+                            }
+                        }
+                        if (mailDuplicado) {
+                            System.out.println("Error: El mail '" + mail + "' ya está registrado.");
+                            break;
+                        }
+                        // --------------------------------------------------
+
                         System.out.print("Ingrese el apellido: ");
                         String apellido = scanner.nextLine();
                         System.out.print("Ingrese el celular: ");
@@ -512,7 +557,22 @@ public class Main {
                             System.out.print("Ingrese el nuevo apellido: ");
                             String apellido = scanner.nextLine();
                             System.out.print("Ingrese el nuevo mail: ");
-                            String mail = scanner.nextLine();
+                            String mail = scanner.nextLine().trim();
+
+                            // Validar mail único al editar (que no sea de otro usuario) ---
+                            boolean mailDuplicadoEdit = false;
+                            for (Usuario u : uService.listarUsuarios()) {
+                                if (u.getMail().equalsIgnoreCase(mail) && !u.getId().equals(id)) {
+                                    mailDuplicadoEdit = true;
+                                    break;
+                                }
+                            }
+                            if (mailDuplicadoEdit) {
+                                System.out.println("Error: El mail '" + mail + "' ya pertenece a otro usuario.");
+                                break;
+                            }
+                            // --------------------------------------------------------------------------------
+
                             System.out.print("Ingrese el nuevo celular: ");
                             String celular = scanner.nextLine();
                             System.out.print("Ingrese la nueva contraseña: ");
@@ -581,7 +641,7 @@ public class Main {
     }
 
     // --- MENÚ DE PEDIDOS ---
-    private static void menuPedidos(Scanner scanner, PedidoService pedService, UsuarioService uService,
+private static void menuPedidos(Scanner scanner, PedidoService pedService, UsuarioService uService,
             ProductoService pService) {
         int opcion;
 
@@ -638,14 +698,25 @@ public class Main {
                             break;
                         }
 
-                        System.out.println("Formas de Pago: 1. EFECTIVO | 2. TARJETA | 3. TRANSFERENCIA");
-                        System.out.print("Seleccione (1-3): ");
-                        int fpOpcion = Integer.parseInt(scanner.nextLine().trim());
+                        // Bucle 'while' para restringir formas de pago válidas ---
+                        int fpOpcion = 0;
+                        while (fpOpcion < 1 || fpOpcion > 3) {
+                            System.out.println("Formas de Pago: 1. EFECTIVO | 2. TARJETA | 3. TRANSFERENCIA");
+                            System.out.print("Seleccione (1-3): ");
+                            try {
+                                fpOpcion = Integer.parseInt(scanner.nextLine().trim());
+                                if (fpOpcion < 1 || fpOpcion > 3) {
+                                    System.out.println("Opción inválida. Por favor seleccione 1, 2 o 3.");
+                                }
+                            } catch (NumberFormatException e) {
+                                System.out.println(" Error: Debe ingresar un número entero.");
+                                fpOpcion = -1;
+                            }
+                        }
+
                         FormaPago fp = FormaPago.EFECTIVO;
-                        if (fpOpcion == 2)
-                            fp = FormaPago.TARJETA;
-                        if (fpOpcion == 3)
-                            fp = FormaPago.TRANSFERENCIA;
+                        if (fpOpcion == 2) fp = FormaPago.TARJETA;
+                        if (fpOpcion == 3) fp = FormaPago.TRANSFERENCIA;
 
                         Pedido nuevoPedido = new Pedido(idPedido, user, fp);
                         pedService.crearPedido(nuevoPedido);
@@ -714,6 +785,17 @@ public class Main {
                         System.out.print("¿Está seguro que desea eliminar el pedido? (S/N): ");
                         String confirmacion = scanner.nextLine();
                         if (confirmacion.equalsIgnoreCase("S")) {
+
+                            // Limpiar la lista interna de detalles antes de borrar el pedido ---
+                          for (Pedido p : pedService.listarPedidos()) {
+                                if (p.getId().equals(id)) {
+                                    if (p.getDetalles() != null) {
+                                        p.getDetalles().clear();
+                                    }
+                                    break;
+                                }
+                            }
+
                             pedService.eliminarPedido(id);
                             System.out.println("Pedido con ID: " + id + " eliminado correctamente.");
                         } else {
@@ -754,61 +836,53 @@ public class Main {
                         int subOpcion = Integer.parseInt(scanner.nextLine().trim());
 
                         if (subOpcion == 1) {
-                            System.out.println("Estados disponibles:");
-                            System.out.println("1. PENDIENTE");
-                            System.out.println("2. CONFIRMADO");
-                            System.out.println("3. TERMINADO");
-                            System.out.println("4. CANCELADO");
-                            System.out.print("Seleccione: ");
-                            int estadoOpcion = Integer.parseInt(scanner.nextLine().trim());
+                            // Bucle 'while' para restringir estados válidos (1-4) ---
+                            int estadoOpcion = 0;
+                            while (estadoOpcion < 1 || estadoOpcion > 4) {
+                                System.out.println("Estados disponibles: 1. PENDIENTE | 2. CONFIRMADO | 3. TERMINADO | 4. CANCELADO");
+                                System.out.print("Seleccione (1-4): ");
+                                try {
+                                    estadoOpcion = Integer.parseInt(scanner.nextLine().trim());
+                                    if (estadoOpcion < 1 || estadoOpcion > 4) {
+                                        System.out.println("Opción inválida. Por favor seleccione de 1 a 4.");
+                                    }
+                                } catch (NumberFormatException e) {
+                                    System.out.println(" Error: Debe ingresar un número entero.");
+                                    estadoOpcion = -1;
+                                }
+                            }
 
                             Estado nuevoEstado = Estado.PENDIENTE;
-                            switch (estadoOpcion) {
-                                case 1:
-                                    nuevoEstado = Estado.PENDIENTE;
-                                    break;
-                                case 2:
-                                    nuevoEstado = Estado.CONFIRMADO;
-                                    break;
-                                case 3:
-                                    nuevoEstado = Estado.TERMINADO;
-                                    break;
-                                case 4:
-                                    nuevoEstado = Estado.CANCELADO;
-                                    break;
-                                default:
-                                    System.out.println("Opción inválida.");
-                                    break;
-                            }
+                            if (estadoOpcion == 2) nuevoEstado = Estado.CONFIRMADO;
+                            if (estadoOpcion == 3) nuevoEstado = Estado.TERMINADO;
+                            if (estadoOpcion == 4) nuevoEstado = Estado.CANCELADO;
+
                             pedService.cambiarEstadoPedido(id, nuevoEstado);
                             System.out.println("Estado del pedido con ID: " + id + " actualizado correctamente.");
 
                         } else if (subOpcion == 2) {
-                            System.out.println("Formas de pago disponibles:");
-                            System.out.println("1. EFECTIVO");
-                            System.out.println("2. TARJETA");
-                            System.out.println("3. TRANSFERENCIA");
-                            System.out.print("Seleccione: ");
-                            int fpOpcion = Integer.parseInt(scanner.nextLine().trim());
+                            // Bucle 'while' para restringir formas de pago válidas (1-3) ---
+                            int fpOpcion = 0;
+                            while (fpOpcion < 1 || fpOpcion > 3) {
+                                System.out.println("Formas de pago disponibles: 1. EFECTIVO | 2. TARJETA | 3. TRANSFERENCIA");
+                                System.out.print("Seleccione (1-3): ");
+                                try {
+                                    fpOpcion = Integer.parseInt(scanner.nextLine().trim());
+                                    if (fpOpcion < 1 || fpOpcion > 3) {
+                                        System.out.println("Opción inválida. Por favor seleccione 1, 2 o 3.");
+                                    }
+                                } catch (NumberFormatException e) {
+                                    System.out.println("Error: Debe ingresar un número entero.");
+                                    fpOpcion = -1;
+                                }
+                            }
 
                             FormaPago nuevaFormaPago = FormaPago.EFECTIVO;
-                            switch (fpOpcion) {
-                                case 1:
-                                    nuevaFormaPago = FormaPago.EFECTIVO;
-                                    break;
-                                case 2:
-                                    nuevaFormaPago = FormaPago.TARJETA;
-                                    break;
-                                case 3:
-                                    nuevaFormaPago = FormaPago.TRANSFERENCIA;
-                                    break;
-                                default:
-                                    System.out.println("Opción inválida.");
-                                    break;
-                            }
+                            if (fpOpcion == 2) nuevaFormaPago = FormaPago.TARJETA;
+                            if (fpOpcion == 3) nuevaFormaPago = FormaPago.TRANSFERENCIA;
+
                             pedService.cambiarFormaPagoPedido(id, nuevaFormaPago);
-                            System.out
-                                    .println("Forma de pago del pedido con ID: " + id + " actualizada correctamente.");
+                            System.out.println("Forma de pago del pedido con ID: " + id + " actualizada correctamente.");
 
                         } else {
                             System.out.println("Opción inválida.");
