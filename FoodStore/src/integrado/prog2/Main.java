@@ -99,7 +99,7 @@ public class Main {
                     }
                     break;
 
-case 2:
+                case 2:
                     try {
                         System.out.print("Ingrese el ID: ");
                         String idStr = scanner.nextLine().trim();
@@ -478,27 +478,52 @@ case 2:
                     }
                     break;
 
-           case 2:
+                case 2:
                     try {
                         System.out.print("Ingrese el ID: ");
                         String idStr = scanner.nextLine().trim();
+
                         if (idStr.isEmpty()) {
-                            System.out.println("Error: El ID no puede estar vacío.");
+                            System.out.println("Error: El ID no puede estar vacio.");
                             break;
                         }
+
                         Long id = Long.parseLong(idStr);
 
                         if (uService.buscarPorId(id) != null) {
-                            System.out.println("Ya existe un usuario con ID: " + id + ".");
+                            System.out.println("Error: Ya existe un usuario con ID: " + id + ".");
                             break;
                         }
 
                         System.out.print("Ingrese el nombre: ");
-                        String nombre = scanner.nextLine();
+                        String nombre = scanner.nextLine().trim();
+
+                        if (nombre.isEmpty()) {
+                            System.out.println("Error: El nombre no puede estar vacio.");
+                            break;
+                        }
+
+                        System.out.print("Ingrese el apellido: ");
+                        String apellido = scanner.nextLine().trim();
+
+                        if (apellido.isEmpty()) {
+                            System.out.println("Error: El apellido no puede estar vacio.");
+                            break;
+                        }
+
                         System.out.print("Ingrese el mail: ");
                         String mail = scanner.nextLine().trim();
 
-                        // Validar mail único al crear ---
+                        if (mail.isEmpty()) {
+                            System.out.println("Error: El mail no puede estar vacio.");
+                            break;
+                        }
+
+                        if (!mail.contains("@") || !mail.contains(".")) {
+                            System.out.println("Error: El mail ingresado no tiene un formato valido.");
+                            break;
+                        }
+
                         boolean mailDuplicado = false;
                         for (Usuario u : uService.listarUsuarios()) {
                             if (u.getMail().equalsIgnoreCase(mail)) {
@@ -506,28 +531,56 @@ case 2:
                                 break;
                             }
                         }
+
                         if (mailDuplicado) {
-                            System.out.println("Error: El mail '" + mail + "' ya está registrado.");
+                            System.out.println("Error: El mail '" + mail + "' ya esta registrado.");
                             break;
                         }
-                        // --------------------------------------------------
 
-                        System.out.print("Ingrese el apellido: ");
-                        String apellido = scanner.nextLine();
                         System.out.print("Ingrese el celular: ");
-                        String celular = scanner.nextLine();
-                        System.out.print("Ingrese la contraseña: ");
-                        String contrasena = scanner.nextLine();
+                        String celular = scanner.nextLine().trim();
+
+                        if (celular.isEmpty()) {
+                            System.out.println("Error: El celular no puede estar vacio.");
+                            break;
+                        }
+
+                        System.out.print("Ingrese la contrasena: ");
+                        String contrasena = scanner.nextLine().trim();
+
+                        if (contrasena.isEmpty()) {
+                            System.out.println("Error: La contrasena no puede estar vacia.");
+                            break;
+                        }
+
                         System.out.println("Rol: 1. USUARIO | 2. ADMIN");
-                        int rolOpcion = Integer.parseInt(scanner.nextLine().trim());
-                        Rol rol = rolOpcion == 2 ? Rol.ADMIN : Rol.USUARIO;
+                        System.out.print("Seleccione el rol: ");
+                        String rolStr = scanner.nextLine().trim();
+
+                        if (rolStr.isEmpty()) {
+                            System.out.println("Error: Debe seleccionar un rol.");
+                            break;
+                        }
+
+                        int rolOpcion = Integer.parseInt(rolStr);
+                        Rol rol;
+
+                        if (rolOpcion == 1) {
+                            rol = Rol.USUARIO;
+                        } else if (rolOpcion == 2) {
+                            rol = Rol.ADMIN;
+                        } else {
+                            System.out.println("Error: opcion de rol invalida. Debe ingresar 1 o 2.");
+                            break;
+                        }
 
                         Usuario nuevoUsuario = new Usuario(id, nombre, apellido, mail, celular, contrasena, rol);
                         uService.agregarUsuario(nuevoUsuario);
+
                         System.out.println("Usuario agregado correctamente con ID: " + id);
 
                     } catch (NumberFormatException e) {
-                        System.out.println("Error: Ingrese un valor numérico válido.");
+                        System.out.println("Error: Ingrese un valor numerico valido.");
                     } catch (IdDuplicadoException e) {
                         System.out.println("Error: " + e.getMessage());
                     } catch (IllegalArgumentException e) {
@@ -537,52 +590,94 @@ case 2:
 
                 case 3:
                     List<Usuario> usuariosEditar = uService.listarUsuarios();
+
                     if (usuariosEditar.isEmpty()) {
                         System.out.println("No hay usuarios cargados para editar.");
                     } else {
                         for (Usuario usuario : usuariosEditar) {
                             System.out.println(usuario);
                         }
+
                         try {
                             System.out.print("Ingrese el ID del usuario a editar: ");
                             String idStr = scanner.nextLine().trim();
+
                             if (idStr.isEmpty()) {
-                                System.out.println("Error: El ID no puede estar vacío.");
+                                System.out.println("Error: El ID no puede estar vacio.");
                                 break;
                             }
+
                             Long id = Long.parseLong(idStr);
 
+                            Usuario usuarioExistente = uService.buscarPorId(id);
+                            if (usuarioExistente == null || usuarioExistente.isEliminado()) {
+                                System.out.println("Error: No se encontro un usuario activo con ese ID.");
+                                break;
+                            }
+
                             System.out.print("Ingrese el nuevo nombre: ");
-                            String nombre = scanner.nextLine();
+                            String nombre = scanner.nextLine().trim();
+
+                            if (nombre.isEmpty()) {
+                                System.out.println("Error: El nombre no puede estar vacio.");
+                                break;
+                            }
+
                             System.out.print("Ingrese el nuevo apellido: ");
-                            String apellido = scanner.nextLine();
+                            String apellido = scanner.nextLine().trim();
+
+                            if (apellido.isEmpty()) {
+                                System.out.println("Error: El apellido no puede estar vacio.");
+                                break;
+                            }
+
                             System.out.print("Ingrese el nuevo mail: ");
                             String mail = scanner.nextLine().trim();
 
-                            // Validar mail único al editar (que no sea de otro usuario) ---
-                            boolean mailDuplicadoEdit = false;
+                            if (mail.isEmpty()) {
+                                System.out.println("Error: El mail no puede estar vacio.");
+                                break;
+                            }
+
+                            if (!mail.contains("@") || !mail.contains(".")) {
+                                System.out.println("Error: El mail ingresado no tiene un formato valido.");
+                                break;
+                            }
+
+                            boolean mailDuplicado = false;
                             for (Usuario u : uService.listarUsuarios()) {
                                 if (u.getMail().equalsIgnoreCase(mail) && !u.getId().equals(id)) {
-                                    mailDuplicadoEdit = true;
+                                    mailDuplicado = true;
                                     break;
                                 }
                             }
-                            if (mailDuplicadoEdit) {
+
+                            if (mailDuplicado) {
                                 System.out.println("Error: El mail '" + mail + "' ya pertenece a otro usuario.");
                                 break;
                             }
-                            // --------------------------------------------------------------------------------
 
                             System.out.print("Ingrese el nuevo celular: ");
-                            String celular = scanner.nextLine();
-                            System.out.print("Ingrese la nueva contraseña: ");
-                            String contrasena = scanner.nextLine();
+                            String celular = scanner.nextLine().trim();
+
+                            if (celular.isEmpty()) {
+                                System.out.println("Error: El celular no puede estar vacio.");
+                                break;
+                            }
+
+                            System.out.print("Ingrese la nueva contrasena: ");
+                            String contrasena = scanner.nextLine().trim();
+
+                            if (contrasena.isEmpty()) {
+                                System.out.println("Error: La contrasena no puede estar vacia.");
+                                break;
+                            }
 
                             uService.editarUsuario(id, nombre, apellido, mail, celular, contrasena);
                             System.out.println("Usuario con ID: " + id + " editado correctamente.");
 
                         } catch (NumberFormatException e) {
-                            System.out.println("Error: El ID debe ser un número válido.");
+                            System.out.println("Error: El ID debe ser un numero valido.");
                         } catch (IdNoEncontradoException e) {
                             System.out.println("Error: " + e.getMessage());
                         } catch (IdEliminadoException e) {
@@ -641,7 +736,7 @@ case 2:
     }
 
     // --- MENÚ DE PEDIDOS ---
-private static void menuPedidos(Scanner scanner, PedidoService pedService, UsuarioService uService,
+    private static void menuPedidos(Scanner scanner, PedidoService pedService, UsuarioService uService,
             ProductoService pService) {
         int opcion;
 
@@ -715,8 +810,12 @@ private static void menuPedidos(Scanner scanner, PedidoService pedService, Usuar
                         }
 
                         FormaPago fp = FormaPago.EFECTIVO;
-                        if (fpOpcion == 2) fp = FormaPago.TARJETA;
-                        if (fpOpcion == 3) fp = FormaPago.TRANSFERENCIA;
+                        if (fpOpcion == 2) {
+                            fp = FormaPago.TARJETA;
+                        }
+                        if (fpOpcion == 3) {
+                            fp = FormaPago.TRANSFERENCIA;
+                        }
 
                         Pedido nuevoPedido = new Pedido(idPedido, user, fp);
                         pedService.crearPedido(nuevoPedido);
@@ -776,34 +875,29 @@ private static void menuPedidos(Scanner scanner, PedidoService pedService, Usuar
                     try {
                         System.out.print("Ingrese el ID del pedido a dar de baja: ");
                         String idStr = scanner.nextLine().trim();
+
                         if (idStr.isEmpty()) {
                             System.out.println("Error: El ID no puede estar vacío.");
                             break;
                         }
+
                         Long id = Long.parseLong(idStr);
 
                         System.out.print("¿Está seguro que desea eliminar el pedido? (S/N): ");
                         String confirmacion = scanner.nextLine();
+
                         if (confirmacion.equalsIgnoreCase("S")) {
-
-                            // Limpiar la lista interna de detalles antes de borrar el pedido ---
-                          for (Pedido p : pedService.listarPedidos()) {
-                                if (p.getId().equals(id)) {
-                                    if (p.getDetalles() != null) {
-                                        p.getDetalles().clear();
-                                    }
-                                    break;
-                                }
-                            }
-
                             pedService.eliminarPedido(id);
                             System.out.println("Pedido con ID: " + id + " eliminado correctamente.");
                         } else {
                             System.out.println("Operación cancelada.");
                         }
+
                     } catch (NumberFormatException e) {
                         System.out.println("Error: El ID debe ser un número válido.");
                     } catch (IdNoEncontradoException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    } catch (IdEliminadoException e) {
                         System.out.println("Error: " + e.getMessage());
                     } catch (IllegalArgumentException e) {
                         System.out.println("Error: " + e.getMessage());
@@ -853,9 +947,15 @@ private static void menuPedidos(Scanner scanner, PedidoService pedService, Usuar
                             }
 
                             Estado nuevoEstado = Estado.PENDIENTE;
-                            if (estadoOpcion == 2) nuevoEstado = Estado.CONFIRMADO;
-                            if (estadoOpcion == 3) nuevoEstado = Estado.TERMINADO;
-                            if (estadoOpcion == 4) nuevoEstado = Estado.CANCELADO;
+                            if (estadoOpcion == 2) {
+                                nuevoEstado = Estado.CONFIRMADO;
+                            }
+                            if (estadoOpcion == 3) {
+                                nuevoEstado = Estado.TERMINADO;
+                            }
+                            if (estadoOpcion == 4) {
+                                nuevoEstado = Estado.CANCELADO;
+                            }
 
                             pedService.cambiarEstadoPedido(id, nuevoEstado);
                             System.out.println("Estado del pedido con ID: " + id + " actualizado correctamente.");
@@ -878,8 +978,12 @@ private static void menuPedidos(Scanner scanner, PedidoService pedService, Usuar
                             }
 
                             FormaPago nuevaFormaPago = FormaPago.EFECTIVO;
-                            if (fpOpcion == 2) nuevaFormaPago = FormaPago.TARJETA;
-                            if (fpOpcion == 3) nuevaFormaPago = FormaPago.TRANSFERENCIA;
+                            if (fpOpcion == 2) {
+                                nuevaFormaPago = FormaPago.TARJETA;
+                            }
+                            if (fpOpcion == 3) {
+                                nuevaFormaPago = FormaPago.TRANSFERENCIA;
+                            }
 
                             pedService.cambiarFormaPagoPedido(id, nuevaFormaPago);
                             System.out.println("Forma de pago del pedido con ID: " + id + " actualizada correctamente.");

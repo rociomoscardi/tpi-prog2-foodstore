@@ -39,19 +39,47 @@ public class CategoriaService {
         }
         for (Categoria categoriaAgregar : categorias) {
             if (categoriaAgregar.getId().equals(categoria.getId())) {
-                throw new IdDuplicadoException("Ya existe una categoría con ID: " + categoria.getId() + "." + " No se pueden agregar categorías con IDs duplicados.");
+                throw new IdDuplicadoException("Ya existe una categoría con ID: " + categoria.getId() + ".");
+            }
+
+            if (!categoriaAgregar.isEliminado()
+                    && categoriaAgregar.getNombre().equalsIgnoreCase(categoria.getNombre())) {
+                throw new IdDuplicadoException("Ya existe una categoría con el nombre: " + categoria.getNombre() + ".");
             }
         }
         categorias.add(categoria);
     }
 
     public void editarCategoria(Long categoriaId, String nombre, String descripcion) {
+        if (categoriaId == null) {
+            throw new IllegalArgumentException("El ID de la categoria no puede ser nulo.");
+        }
+
+        if (nombre == null || nombre.trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre de la categoria no puede estar vacio.");
+        }
+
+        if (descripcion == null || descripcion.trim().isEmpty()) {
+            throw new IllegalArgumentException("La descripcion de la categoria no puede estar vacia.");
+        }
+
+        nombre = nombre.trim();
+        descripcion = descripcion.trim();
+
         for (Categoria categoriaEditar : categorias) {
             if (categoriaEditar.getId().equals(categoriaId)) {
 
                 if (categoriaEditar.isEliminado()) {
                     throw new IdEliminadoException(
-                            "La categoría con ID: " + categoriaEditar.getId() + " fue eliminada. No se puede editar.");
+                            "La categoria con ID: " + categoriaEditar.getId() + " fue eliminada. No se puede editar.");
+                }
+
+                for (Categoria c : categorias) {
+                    if (!c.isEliminado()
+                            && !c.getId().equals(categoriaId)
+                            && c.getNombre().equalsIgnoreCase(nombre)) {
+                        throw new IdDuplicadoException("Ya existe una categoria con el nombre: " + nombre + ".");
+                    }
                 }
 
                 categoriaEditar.setNombre(nombre);
@@ -59,8 +87,8 @@ public class CategoriaService {
                 return;
             }
         }
-        throw new IdNoEncontradoException("No se encontró una categoría con ID: " + categoriaId + ".");
 
+        throw new IdNoEncontradoException("No se encontro una categoria con ID: " + categoriaId + ".");
     }
 
     // Busca una categoría por su ID en la colección. Devuelve la categoría si la

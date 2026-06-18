@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UsuarioService {
+
     // La colección de usuarios se almacena en memoria utilizando una lista
     private List<Usuario> listaUsuarios;
 
@@ -26,6 +27,11 @@ public class UsuarioService {
         for (Usuario u : listaUsuarios) {
             if (u.getId().equals(nuevoUsuario.getId())) {
                 throw new IdDuplicadoException("Ya existe un usuario con ID: " + nuevoUsuario.getId() + ".");
+            }
+
+            if (!u.isEliminado()
+                    && u.getMail().equalsIgnoreCase(nuevoUsuario.getMail())) {
+                throw new IdDuplicadoException("Ya existe un usuario con el mail: " + nuevoUsuario.getMail() + ".");
             }
         }
         this.listaUsuarios.add(nuevoUsuario);
@@ -63,6 +69,13 @@ public class UsuarioService {
         }
         if (usuarioAEditar.isEliminado()) {
             throw new IdEliminadoException("El usuario con ID: " + id + " fue eliminado y no se puede editar.");
+        }
+        for (Usuario u : listaUsuarios) {
+            if (!u.isEliminado()
+                    && !u.getId().equals(id)
+                    && u.getMail().equalsIgnoreCase(nuevoMail)) {
+                throw new IdDuplicadoException("Ya existe un usuario con el mail: " + nuevoMail + ".");
+            }
         }
         usuarioAEditar.setNombre(nuevoNombre);
         usuarioAEditar.setApellido(nuevoApellido);

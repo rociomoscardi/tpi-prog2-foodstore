@@ -2,6 +2,7 @@ package integrado.prog2.service;
 
 import integrado.prog2.entities.Pedido;
 import integrado.prog2.entities.Producto;
+import integrado.prog2.entities.DetallePedido;
 import integrado.prog2.enums.Estado;
 import integrado.prog2.enums.FormaPago;
 import integrado.prog2.exception.IdDuplicadoException;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PedidoService {
+
     // La colección de pedidos se almacena en memoria utilizando una lista
     private final List<Pedido> listaPedidos;
 
@@ -85,10 +87,12 @@ public class PedidoService {
             throw new IdNoEncontradoException("No se encontró un pedido con ID: " + id + ".");
         }
         pedido.eliminar();
+        for (DetallePedido detalle : pedido.getDetalles()) {
+            detalle.eliminar();
+        }
     }
 
     // --- MÉTODOS PARA GESTIONAR EL CARRITO (Detalles del Pedido) ---
-
     // Agregar un producto al pedido
     public void agregarProductoAPedido(Long idPedido, Producto producto, int cantidad) {
         Pedido pedido = buscarPorId(idPedido);
