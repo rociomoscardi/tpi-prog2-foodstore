@@ -48,13 +48,13 @@ src/
 
 ## 🎥 Video explicativo
 
-> 🔗 [Insertar link al video]
+> 🔗 https://www.youtube.com/watch?v=kEqlWBjtnas
 
 
 
-## 📄 Documentación PDF
+## 📄 Documentación
 
-> 🔗 [Insertar link al PDF]
+> 🔗 https://docs.google.com/document/d/1nNAytcnpXgBJG3dVm7ceMCelGwcEIuME/edit?usp=sharing&ouid=114499175884614141104&rtpof=true&sd=true
 
 
 
