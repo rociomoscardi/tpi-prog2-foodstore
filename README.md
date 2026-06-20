@@ -55,7 +55,7 @@ Trabajo Práctico Integrador - Programación II - Food Store](https://www.youtub
 
 ## 📄 Documentación
 
-> 🔗 [Gil-Moscardi-Santillan-Weisheim-TPI-PROG2](file:///C:/Users/ro%20moscardi/AppData/Local/Temp/2a7f345a-9015-4dae-a289-b43fa9f9e195_Gil-Moscardi-Santillan-Weisheim-TPI-PROG2.zip.195/Gil-Moscardi-Santillan-Weisheim-TPI-PROG2.pdf)
+> 🔗 [Gil-Moscardi-Santillan-Weisheim-TPI-PROG2](https://docs.google.com/document/d/1nNAytcnpXgBJG3dVm7ceMCelGwcEIuME/edit?usp=sharing&ouid=114499175884614141104&rtpof=true&sd=true)
 
 
 
